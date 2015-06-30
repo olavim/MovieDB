@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="18b1122b-a610-4153-b9f3-f17afda0fc05" name="Default" comment="webhook test">
+    <list default="true" id="18b1122b-a610-4153-b9f3-f17afda0fc05" name="Default" comment="gitignore config">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MovieDB.iws" />
@@ -475,7 +476,7 @@
       <created>1435650768860</created>
       <option name="number" value="Default" />
       <updated>1435650768860</updated>
-      <workItem from="1435650779468" duration="6768000" />
+      <workItem from="1435650779468" duration="6973000" />
     </task>
     <task id="LOCAL-00001" summary="add git pull script">
       <created>1435678047083</created>
@@ -513,11 +514,17 @@
       <option name="project" value="LOCAL" />
       <updated>1435682954481</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="gitignore config">
+      <created>1435685415674</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1435685415674</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6768000" />
+    <option name="totallyTimeSpent" value="6973000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="22" width="2568" height="1422" extended-state="6" />
@@ -560,7 +567,8 @@
     <MESSAGE value="playing with github" />
     <MESSAGE value="webhook config" />
     <MESSAGE value="webhook test" />
-    <option name="LAST_COMMIT_MESSAGE" value="webhook test" />
+    <MESSAGE value="gitignore config" />
+    <option name="LAST_COMMIT_MESSAGE" value="gitignore config" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
