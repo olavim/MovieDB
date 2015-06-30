@@ -55,6 +55,7 @@ class Handler
     {
         $headers = apache_request_headers();
         $payload = file_get_contents('php://input');
+		$headers['X-Hub-Signature'] = isset($headers['X-Hub-Signature']) ? $headers['X-Hub-Signature'] : "";
         if (!$this->validateSignature($headers['X-Hub-Signature'], $payload)) {
             return false;
         }
@@ -65,6 +66,7 @@ class Handler
     }
     protected function validateSignature($gitHubSignatureHeader, $payload)
     {
+		$gitHubSignatureHeader = $gitHubSignatureHeader ? $gitHubSignatureHeader : "sha256=";
         list ($algo, $gitHubSignature) = explode("=", $gitHubSignatureHeader);
         $payloadHash = hash_hmac($algo, $payload, $this->secret);
         return ($payloadHash == $gitHubSignature);
