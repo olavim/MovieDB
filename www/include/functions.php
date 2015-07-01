@@ -1,6 +1,6 @@
 <?php
 include_once 'psl-config.php';
- 
+
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name
     $secure = SECURE;
@@ -111,7 +111,7 @@ function checkbrute($user_id, $mysqli) {
 
 function login_check($mysqli) {
     // Check if all session variables are set 
-    if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) { 
+    if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) {
         $user_id = $_SESSION['user_id'];
         $login_string = $_SESSION['login_string'];
         $username = $_SESSION['username'];

@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../secure.php';
+include_once __DIR__ . '/../secure.php';
 /**
  * These are the database login details
  */  

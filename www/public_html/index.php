@@ -1,5 +1,5 @@
 ﻿<?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../check_login.php';
+require_once '../check_login.php';
 
 function get($s) {
 	return isset($_GET[$s]) ? $_GET[$s] : "";
