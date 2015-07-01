@@ -1,10 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "moviedb";
+include_once "/../include/psl-config.php";   // As functions.php is not included
+$database = "moviedb";
 
-$connection_moviedb = new mysqli($servername, $username, $password, $dbname);
+$connection_moviedb = new mysqli(HOST, USER, PASSWORD, $database);
 
 // Check connection
 if ($connection_moviedb->connect_error) {

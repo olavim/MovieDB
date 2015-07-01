@@ -1,6 +1,4 @@
 ﻿<?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/db_connect.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/functions.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/../check_login.php';
 
 function get($s) {
