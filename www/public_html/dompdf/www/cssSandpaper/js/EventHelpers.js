@@ -30,7 +30,7 @@ var EventHelpers = new function(){
 		} 
 		
 		me.docIsLoaded = true;
-	}
+	};
 	
     /**
      * Adds an event to the document.  Examples of usage:
@@ -52,10 +52,10 @@ var EventHelpers = new function(){
             obj['e' + evType + fn] = fn;
             obj[evType + fn] = function(){
                 obj["e" + evType + fn](self.event);
-            }
+            };
             obj.attachEvent("on" + evType, obj[evType + fn]);
         }
-    }
+    };
     
     
     /**
@@ -80,13 +80,13 @@ var EventHelpers = new function(){
                 // do nothing;
             }
         }
-    }
+    };
     
     function removeEventAttribute(obj, beginName){
         var attributes = obj.attributes;
         for (var i = 0; i < attributes.length; i++) {
-            var attribute = attributes[i]
-            var name = attribute.name
+            var attribute = attributes[i];
+            var name = attribute.name;
             if (name.indexOf(beginName) == 0) {
                 //obj.removeAttributeNode(attribute);
                 attribute.specified = false;
@@ -105,7 +105,7 @@ var EventHelpers = new function(){
             obj.attachEvent("onmousewheel", fn);
         }
         
-    }
+    };
     
     me.removeScrollWheelEvent = function(obj, fn){
         if (obj.removeEventListener) {
@@ -118,7 +118,7 @@ var EventHelpers = new function(){
             obj.detatchEvent("onmousewheel", fn);
         }
         
-    }
+    };
     
     /**
      * Given a mouse event, get the mouse pointer's x-coordinate.
@@ -143,7 +143,7 @@ var EventHelpers = new function(){
             return e.clientX;
         else 
             return null;
-    }
+    };
     
     /**
      * Given a mouse event, get the mouse pointer's y-coordinate.
@@ -163,7 +163,7 @@ var EventHelpers = new function(){
         else if (e.clientY != null) {
             return e.clientY;
         }
-    }
+    };
     /**
      * Given a mouse scroll wheel event, get the "delta" of how fast it moved.
      * @param {Object} e - a DOM Event Object.
@@ -188,7 +188,7 @@ var EventHelpers = new function(){
             delta = -e.detail / 3;
         }
         return delta
-    }
+    };
     
     /**
      * Sets a mouse move event of a document.
@@ -209,7 +209,7 @@ var EventHelpers = new function(){
         window.onmousemove = func;
         window.onmouseover = func;
         
-    }
+    };
     
     
     
@@ -233,7 +233,7 @@ var EventHelpers = new function(){
         } else {
             return null;
         }
-    }
+    };
     
     
     
@@ -252,7 +252,7 @@ var EventHelpers = new function(){
         } else if (e.which) {
             return e.which;
         }
-    }
+    };
     
     
     /** 
@@ -315,9 +315,9 @@ var EventHelpers = new function(){
         } else {
             me.addEvent(window, 'load', func);
         }
-    }
+    };
     
-    var pageLoadEventArray = new Array();
+    var pageLoadEventArray = [];
     
     me.runPageLoadEvents = function(e){
         if (isSafari || e.srcElement.readyState == "complete") {
@@ -326,7 +326,7 @@ var EventHelpers = new function(){
                 pageLoadEventArray[i]();
             }
         }
-    }
+    };
     /**
      * Determines if either addPageLoadEvent('funcName') or addEvent(window, 'load', funcName)
      * has been executed.
@@ -341,7 +341,7 @@ var EventHelpers = new function(){
         
         // flag this function so we don't do the same thing twice
         funcArgs.callee.done = true;
-    }
+    };
     
     
     
@@ -365,7 +365,7 @@ var EventHelpers = new function(){
             // do nothing
         }
         
-    }
+    };
     
     me.cancelBubble = function(e){
         if (e.stopPropagation) {
@@ -378,7 +378,7 @@ var EventHelpers = new function(){
         catch (ex) {
             // do nothing
         }
-    }
+    };
 	
 	/* 
 	 * Fires an event manually.
@@ -403,7 +403,7 @@ var EventHelpers = new function(){
 				return;
 			}
 			*/
-			return element.fireEvent('on' + event, globalEvent)
+			return element.fireEvent('on' + event, globalEvent);
 			jslog.debug('ss');
 			
 	    }
@@ -412,7 +412,7 @@ var EventHelpers = new function(){
 	        globalEvent.initEvent(event, true, true); // event type,bubbling,cancelable
 	        return !element.dispatchEvent(globalEvent);
 	    }
-}
+};
     
     /* EventHelpers.init () */
     function init(){
@@ -436,6 +436,6 @@ var EventHelpers = new function(){
     }
     
     init();
-}
+};
 
 EventHelpers.addPageLoadEvent('EventHelpers.init');

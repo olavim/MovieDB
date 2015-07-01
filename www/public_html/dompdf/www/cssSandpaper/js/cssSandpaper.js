@@ -28,7 +28,7 @@ if (!document.querySelectorAll) {
 var cssSandpaper = new function(){
     var me = this;
     
-    var styleNodes, styleSheets = new Array();
+    var styleNodes, styleSheets = [];
     
     var ruleSetRe = /[^\{]*{[^\}]*}/g;
     var ruleSplitRe = /[\{\}]/g;
@@ -42,10 +42,10 @@ var cssSandpaper = new function(){
     
     var reAtRule = /@[^\{\};]*;|@[^\{\};]*\{[^\}]*\}/g;
     
-    var reFunctionSpaces = /\(\s*/g
+    var reFunctionSpaces = /\(\s*/g;
     
     
-    var ruleLists = new Array();
+    var ruleLists = [];
     var styleNode;
     
     var tempObj;
@@ -77,7 +77,7 @@ var cssSandpaper = new function(){
         setClasses();
         //fixBorderRadius();
     
-    }
+    };
     
     me.setOpacity = function(obj, value){
         var property = CSS3Helpers.findProperty(document.body, 'opacity');
@@ -96,7 +96,7 @@ var cssSandpaper = new function(){
         } else if (obj.style[property] != null) {
             obj.style[property] = value;
         }
-    }
+    };
     
     
     function fixOpacity(){
@@ -126,7 +126,7 @@ var cssSandpaper = new function(){
         } else if (obj.style[property] != null) {
             obj.style[property] = transformString;
         }
-    }
+    };
     
     function fixTransforms(){
     
@@ -160,7 +160,7 @@ var cssSandpaper = new function(){
         } else if (obj.style[property] != null) {
             obj.style[property] = value;
         }
-    }
+    };
     
     function fixBoxShadow(){
     
@@ -231,7 +231,7 @@ var cssSandpaper = new function(){
                 // do nothing (for now).
             }
         }
-    }
+    };
     
     me.setRGBABackground = function(node, value){
     
@@ -256,7 +256,7 @@ var cssSandpaper = new function(){
                 break;
         }
         
-    }
+    };
     
     me.setHSLABackground = function(node, value) {
     	var support = CSS3Helpers.reportColorSpaceSupport('HSLA', colorType.BACKGROUND);
@@ -285,7 +285,7 @@ var cssSandpaper = new function(){
                 }
                 break;
         }
-    }
+    };
     
     /**
 	 * Convert a hyphenated string to camelized text.  For example, the string "font-type" will be converted
@@ -307,7 +307,7 @@ var cssSandpaper = new function(){
 		}
 		
 		return r;
-	}
+	};
     
     me.setHSLColor = function (node, property, value) {
     	var support = CSS3Helpers.reportColorSpaceSupport('HSL', colorType.FOREGROUND);
@@ -319,7 +319,7 @@ var cssSandpaper = new function(){
             case implementation.HEX_WORKAROUND:
             	
             	var hslColor = value.match(reHSL)[0];
-            	var hexColor = new RGBColor(hslColor).toHex()
+            	var hexColor = new RGBColor(hslColor).toHex();
             	var newPropertyValue = value.replace(reHSL, hexColor);
             	
             	
@@ -329,7 +329,7 @@ var cssSandpaper = new function(){
                 break;
         }
     		
-    }
+    };
     
     
     function fixLinearGradients(){
@@ -371,7 +371,7 @@ var cssSandpaper = new function(){
     
     me.getProperties = function (obj, objName)
 	{
-		var result = ""
+		var result = "";
 		
 		if (!obj) {
 			return result;
@@ -386,7 +386,7 @@ var cssSandpaper = new function(){
 			}
 		}
 		return result
-	}
+	};
     
     function fixColors() {
     	var support = CSS3Helpers.reportColorSpaceSupport('HSL', colorType.FOREGROUND);
@@ -490,7 +490,7 @@ var cssSandpaper = new function(){
                     var properties = propertiesStr.split(';');
                     for (var k = 0; k < properties.length; k++) {
                         if (properties[k].trim() != '') {
-                            var splitProperty = properties[k].split(':')
+                            var splitProperty = properties[k].split(':');
                             var name = splitProperty[0].trim().toLowerCase();
                             var value = splitProperty[1];
                             if (!ruleLists[name]) {
@@ -536,11 +536,11 @@ var cssSandpaper = new function(){
 			CSSHelpers.removeClass(hiddenNodes[i], 'cssSandpaper-initiallyHidden');
 		} 
     }
-}
+};
 
 function RuleList(propertyName){
     var me = this;
-    me.values = new Array();
+    me.values = [];
     me.propertyName = propertyName;
     me.add = function(selector, value){
         me.values.push(new CSSRule(selector, me.propertyName, value));
@@ -603,15 +603,15 @@ var MatrixGenerator = new function(){
     
     me.prettyPrint = function(m){
         return StringHelpers.sprintf('| %s %s %s | - | %s %s %s | - |%s %s %s|', m.e(1, 1), m.e(1, 2), m.e(1, 3), m.e(2, 1), m.e(2, 2), m.e(2, 3), m.e(3, 1), m.e(3, 2), m.e(3, 3))
-    }
+    };
     
     me.rotate = function(angleStr){
         var num = getRadianScalar(angleStr);
         return Matrix.RotationZ(num);
-    }
+    };
     
     me.scale = function(sx, sy){
-        sx = parseFloat(sx)
+        sx = parseFloat(sx);
         
         if (!sy) {
             sy = sx;
@@ -621,15 +621,15 @@ var MatrixGenerator = new function(){
         
         
         return $M([[sx, 0, 0], [0, sy, 0], [0, 0, 1]]);
-    }
+    };
     
     me.scaleX = function(sx){
         return me.scale(sx, 1);
-    }
+    };
     
     me.scaleY = function(sy){
         return me.scale(1, sy);
-    }
+    };
     
     me.skew = function(ax, ay){
         var xRad = getRadianScalar(ax);
@@ -647,34 +647,34 @@ var MatrixGenerator = new function(){
 		} else {
 			return null;
 		}
-    }
+    };
     
     me.skewX = function(ax){
     
         return me.skew(ax, "0");
-    }
+    };
     
     me.skewY = function(ay){
         return me.skew("0", ay);
-    }
+    };
     
     me.translate = function(tx, ty){
     
         var TX = parseInt(tx);
-        var TY = parseInt(ty)
+        var TY = parseInt(ty);
         
         //jslog.debug(StringHelpers.sprintf('translate %f %f', TX, TY));
         
         return $M([[1, 0, TX], [0, 1, TY], [0, 0, 1]]);
-    }
+    };
     
     me.translateX = function(tx){
         return me.translate(tx, 0);
-    }
+    };
     
     me.translateY = function(ty){
         return me.translate(0, ty);
-    }
+    };
     
     
     me.matrix = function(a, b, c, d, e, f){
@@ -682,7 +682,7 @@ var MatrixGenerator = new function(){
         // for now, e and f are ignored
         return $M([[a, c, parseInt(e)], [b, d, parseInt(f)], [0, 0, 1]])
     }
-}
+};
 
 var CSS3Helpers = new function(){
     var me = this;
@@ -694,15 +694,15 @@ var CSS3Helpers = new function(){
     var reRightBracket = /\)/g;
     var reComma = /,/g;
     
-    var reSpaces = /\s+/g
+    var reSpaces = /\s+/g;
     
     var reFilterNameSplitter = /progid:([^\(]*)/g;
     
-    var reLinearGradient
+    var reLinearGradient;
     
     var canvas;
     
-    var cache = new Array();
+    var cache = [];
     
     
     me.supports = function(cssProperty){
@@ -711,7 +711,7 @@ var CSS3Helpers = new function(){
         } else {
             return false;
         }
-    }
+    };
     
     me.getCanvas = function(){
     
@@ -721,7 +721,7 @@ var CSS3Helpers = new function(){
             canvas = document.createElement('canvas');
             return canvas;
         }
-    }
+    };
     
     me.getTransformationMatrix = function(CSS3TransformProperty, doThrowIfError){
     
@@ -777,10 +777,10 @@ var CSS3Helpers = new function(){
         
         return resultantMatrix;
         
-    }
+    };
     
     me.getBoxShadowValues = function(propertyValue){
-        var r = new Object();
+        var r = {};
         
         var values = propertyValue.split(reSpaces);
         
@@ -805,11 +805,11 @@ var CSS3Helpers = new function(){
         r.color = values[values.length - 1];
         
         return r;
-    }
+    };
     
     me.getGradient = function(propertyValue){
-        var r = new Object();
-        r.colorStops = new Array();
+        var r = {};
+        r.colorStops = [];
         
         
         var substring = me.getBracketedSubstring(propertyValue, '-sand-gradient');
@@ -894,7 +894,7 @@ var CSS3Helpers = new function(){
         r.y1 = endCoord[1];
         
         return r;
-    }
+    };
     
     function swapIndices(array, index1, index2){
         var tmp = array[index1];
@@ -903,7 +903,7 @@ var CSS3Helpers = new function(){
     }
     
     function parseColorStop(colorStop, index){
-        var r = new Object();
+        var r = {};
         var substring = me.getBracketedSubstring(colorStop, 'color-stop');
         var from = me.getBracketedSubstring(colorStop, 'from');
         var to = me.getBracketedSubstring(colorStop, 'to');
@@ -911,7 +911,7 @@ var CSS3Helpers = new function(){
         
         if (substring) {
             //color-stop
-            var parameters = substring.split(',')
+            var parameters = substring.split(',');
             r.stop = normalizePercentage(parameters[0].trim());
             r.color = parameters[1].trim();
         } else if (from) {
@@ -976,7 +976,7 @@ var CSS3Helpers = new function(){
             cache["gradientSupport"] = r;
         }
         return cache["gradientSupport"];
-    }
+    };
     
     me.reportColorSpaceSupport = function(colorSpace, type){
     	
@@ -1048,12 +1048,12 @@ var CSS3Helpers = new function(){
             cache[colorSpace] = r;
         }
         return cache[colorSpace];
-    }
+    };
     
     
     
     me.getBracketedSubstring = function(s, header){
-        var gradientIndex = s.indexOf(header + '(')
+        var gradientIndex = s.indexOf(header + '(');
         
         if (gradientIndex != -1) {
             var substring = s.substring(gradientIndex);
@@ -1080,7 +1080,7 @@ var CSS3Helpers = new function(){
         }
         
         
-    }
+    };
     
     
     me.setMatrixFilter = function(obj, matrix){
@@ -1108,7 +1108,7 @@ var CSS3Helpers = new function(){
 		container.style.marginTop = offsets.y;
 		container.style.marginRight = 0;
 		container.style.marginBottom = 0;
-	}
+	};
 	
 	me.getTransformedDimensions = function (obj, matrix) {
 		var r = {};
@@ -1141,7 +1141,7 @@ var CSS3Helpers = new function(){
 		}
 		
 		return r;
-	}
+	};
 	
 	me.getIEMatrixOffsets = function (obj, matrix, width, height) {
         var r = {};
@@ -1162,7 +1162,7 @@ var CSS3Helpers = new function(){
         r.y  = (((originalHeight - transformedDimensions.height) / 2) - offset + matrix.e(2, 3)) + 'px';
         
 		return r;
-    }
+    };
     
     function hasIETransformWorkaround(obj){
     
@@ -1184,7 +1184,7 @@ var CSS3Helpers = new function(){
             
             container.xOriginalWidth = obj.offsetWidth;
             container.xOriginalHeight = obj.offsetHeight;
-            container.style.position = 'absolute'
+            container.style.position = 'absolute';
             container.style.zIndex = obj.currentStyle.zIndex;
             
             
@@ -1202,7 +1202,7 @@ var CSS3Helpers = new function(){
             
             
             obj.style.top = "auto";
-            obj.style.left = "auto"
+            obj.style.left = "auto";
             obj.style.bottom = "auto";
             obj.style.right = "auto";
             // This is what we need in order to insert to keep the document
@@ -1221,7 +1221,7 @@ var CSS3Helpers = new function(){
             
             container.style.padding = '0';
             
-            filter = me.addFilter(obj, 'DXImageTransform.Microsoft.Matrix', "M11=1, M12=0, M21=0, M22=1, sizingMethod='auto expand'")
+            filter = me.addFilter(obj, 'DXImageTransform.Microsoft.Matrix', "M11=1, M12=0, M21=0, M22=1, sizingMethod='auto expand'");
             var bgImage = obj.currentStyle.backgroundImage.split("\"")[1];
             /*
             
@@ -1277,7 +1277,7 @@ var CSS3Helpers = new function(){
             // is set right before we add the new one.
             
             
-            var filterList = new MSFilterList(obj)
+            var filterList = new MSFilterList(obj);
             
             filterList.fixFilterStyle();
             
@@ -1294,7 +1294,7 @@ var CSS3Helpers = new function(){
         }
         
         return filter;
-    }
+    };
     
     
     function degreesToRadians(degrees){
@@ -1304,7 +1304,7 @@ var CSS3Helpers = new function(){
     me.findProperty = function(obj, type){
         capType = type.capitalize();
         
-        var r = cache[type]
+        var r = cache[type];
         if (!r) {
         
         
@@ -1325,7 +1325,7 @@ var CSS3Helpers = new function(){
             cache[type] = r;
         }
         return r;
-    }
+    };
     
     /*
      * "A point is a pair of space-separated values. The syntax supports numbers,
@@ -1354,7 +1354,7 @@ var CSS3Helpers = new function(){
         if (isNaN(value)) 
             throw Error("Unable to parse coordinate: " + value);
         return value;
-    }
+    };
     
     me.applyCanvasGradient = function(el, gradient){
     
@@ -1383,8 +1383,7 @@ var CSS3Helpers = new function(){
             var cs = gradient.colorStops[i];
             
             canvasGradient.addColorStop(cs.stop, cs.color);
-        };
-        
+        }
         //Paint the gradient
         ctx.fillStyle = canvasGradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1395,12 +1394,12 @@ var CSS3Helpers = new function(){
         
     }
     
-}
+};
 
 function MSFilterList(node){
     var me = this;
     
-    me.list = new Array();
+    me.list = [];
     me.node = node;
     
     var reFilterListSplitter = /[\s\S]*\([\s\S]*\)/g;
@@ -1435,7 +1434,7 @@ function MSFilterList(node){
             }
         }
         return sb.toString();
-    }
+    };
     
     
     me.fixFilterStyle = function(){
@@ -1447,7 +1446,7 @@ function MSFilterList(node){
             // do nothing.
         }
         
-    }
+    };
     
     init();
 }
@@ -1498,7 +1497,7 @@ function MSFilter(node, filterCall){
         sb.append(')');
         
         return sb.toString();
-    }
+    };
     
     
     
@@ -1521,12 +1520,12 @@ var implementation = new function(){
     this.CANVAS_WORKAROUND = 6;
     this.FILTER_WORKAROUND = 7;
     this.HEX_WORKAROUND = 8;
-}
+};
 
 var colorType = new function () {
 	this.BACKGROUND = 0;
 	this.FOREGROUND = 1;
-}
+};
 
 /*
  * Extra helper routines
@@ -1560,7 +1559,7 @@ StringHelpers = new function(){
             for (var i = 0; i < Math.abs(len); i++) 
                 ps += ch;
             return len > 0 ? str + ps : ps + str;
-        }
+        };
         var processFlags = function(flags, width, rs, arg){
             var pn = function(flags, arg, rs){
                 if (arg >= 0) {
@@ -1571,7 +1570,7 @@ StringHelpers = new function(){
                 } else 
                     rs = '-' + rs;
                 return rs;
-            }
+            };
             var iWidth = parseInt(width, 10);
             if (width.charAt(0) == '0') {
                 var ec = 0;
@@ -1589,31 +1588,31 @@ StringHelpers = new function(){
                     rs = pad(rs, ' ', iWidth - rs.length);
             }
             return rs;
-        }
-        var converters = new Array();
+        };
+        var converters = [];
         converters['c'] = function(flags, width, precision, arg){
             if (typeof(arg) == 'number') 
                 return String.fromCharCode(arg);
             if (typeof(arg) == 'string') 
                 return arg.charAt(0);
             return '';
-        }
+        };
         converters['d'] = function(flags, width, precision, arg){
             return converters['i'](flags, width, precision, arg);
-        }
+        };
         converters['u'] = function(flags, width, precision, arg){
             return converters['i'](flags, width, precision, Math.abs(arg));
-        }
+        };
         converters['i'] = function(flags, width, precision, arg){
             var iPrecision = parseInt(precision);
             var rs = ((Math.abs(arg)).toString().split('.'))[0];
             if (rs.length < iPrecision) 
                 rs = pad(rs, ' ', iPrecision - rs.length);
             return processFlags(flags, width, rs, arg);
-        }
+        };
         converters['E'] = function(flags, width, precision, arg){
             return (converters['e'](flags, width, precision, arg)).toUpperCase();
-        }
+        };
         converters['e'] = function(flags, width, precision, arg){
             iPrecision = parseInt(precision);
             if (isNaN(iPrecision)) 
@@ -1622,7 +1621,7 @@ StringHelpers = new function(){
             if (rs.indexOf('.') < 0 && flags.indexOf('#') >= 0) 
                 rs = rs.replace(/^(.*)(e.*)$/, '$1.$2');
             return processFlags(flags, width, rs, arg);
-        }
+        };
         converters['f'] = function(flags, width, precision, arg){
             iPrecision = parseInt(precision);
             if (isNaN(iPrecision)) 
@@ -1631,10 +1630,10 @@ StringHelpers = new function(){
             if (rs.indexOf('.') < 0 && flags.indexOf('#') >= 0) 
                 rs = rs + '.';
             return processFlags(flags, width, rs, arg);
-        }
+        };
         converters['G'] = function(flags, width, precision, arg){
             return (converters['g'](flags, width, precision, arg)).toUpperCase();
-        }
+        };
         converters['g'] = function(flags, width, precision, arg){
             iPrecision = parseInt(precision);
             absArg = Math.abs(arg);
@@ -1652,7 +1651,7 @@ StringHelpers = new function(){
                 rsf = rsf + '.';
             rs = rse.length < rsf.length ? rse : rsf;
             return processFlags(flags, width, rs, arg);
-        }
+        };
         converters['o'] = function(flags, width, precision, arg){
             var iPrecision = parseInt(precision);
             var rs = Math.round(Math.abs(arg)).toString(8);
@@ -1661,10 +1660,10 @@ StringHelpers = new function(){
             if (flags.indexOf('#') >= 0) 
                 rs = '0' + rs;
             return processFlags(flags, width, rs, arg);
-        }
+        };
         converters['X'] = function(flags, width, precision, arg){
             return (converters['x'](flags, width, precision, arg)).toUpperCase();
-        }
+        };
         converters['x'] = function(flags, width, precision, arg){
             var iPrecision = parseInt(precision);
             arg = Math.abs(arg);
@@ -1674,14 +1673,14 @@ StringHelpers = new function(){
             if (flags.indexOf('#') >= 0) 
                 rs = '0x' + rs;
             return processFlags(flags, width, rs, arg);
-        }
+        };
         converters['s'] = function(flags, width, precision, arg){
             var iPrecision = parseInt(precision);
             var rs = arg;
             if (rs.length > iPrecision) 
                 rs = rs.substring(0, iPrecision);
             return processFlags(flags, width, rs, 0);
-        }
+        };
         farr = fstring.split('%');
         retstr = farr[0];
         fpRE = /^([-+ #]*)(\d*)\.?(\d*)([cdieEfFgGosuxX])(.*)$/;
@@ -1694,7 +1693,7 @@ StringHelpers = new function(){
             retstr += fps[5];
         }
         return retstr;
-    }
+    };
     
     /**
      * Take out the first comment inside a block of HTML
@@ -1796,7 +1795,7 @@ CSSHelpers = new function(){
 	    { computedStyle = document.defaultView.getComputedStyle(elem, null); }
 	
 	  return computedStyle[style];
-	}
+	};
 	
 	
     /**
@@ -1814,7 +1813,7 @@ CSSHelpers = new function(){
         return (re.test(obj.className));
         
         
-    }
+    };
     
     /**
      * Make an HTML object be a member of a certain class.
@@ -1831,7 +1830,7 @@ CSSHelpers = new function(){
         if (!me.isMemberOfClass(obj, className)) {
             obj.className += " " + className;
         }
-    }
+    };
     
     /**
      * Make an HTML object *not* be a member of a certain class.
@@ -1856,7 +1855,7 @@ CSSHelpers = new function(){
         }
         
         
-    }
+    };
 	
 	function getClassReString(className) {
 		return '\\s'+className+'\\s|^' + className + '\\s|\\s' + className + '$|' + '^' + className +'$';
@@ -1892,7 +1891,7 @@ CSSHelpers = new function(){
 			}
 			return a;
 		}
-	}
+	};
     
     /**
      * Generates a regular expression string that can be used to detect a class name
@@ -1946,7 +1945,7 @@ DOMHelpers = new function () {
 	 */
 	me.getAllDescendants = function(obj) {
 		return obj.all ? obj.all : obj.getElementsByTagName('*');
-	}
+	};
 	
 	/******
 	* Converts a DOM live node list to a static/dead array.  Good when you don't
@@ -1990,19 +1989,19 @@ function StringBuffer(){
     me.append = function(string){
         buffer.push(string);
         return me;
-    }
+    };
     
     me.appendBuffer = function(bufferToAppend){
         buffer = buffer.concat(bufferToAppend);
-    }
+    };
     
     me.toString = function(){
         return buffer.join("");
-    }
+    };
     
     me.getLength = function(){
         return buffer.length;
-    }
+    };
     
     me.flush = function(){
         buffer.length = 0;
@@ -2261,12 +2260,12 @@ function RGBColor(color_string){
     // some getters
     me.toRGB = function(){
         return 'rgb(' + me.r + ', ' + me.g + ', ' + me.b + ')';
-    }
+    };
     
     // some getters
     me.toRGBA = function(){
         return 'rgba(' + me.r + ', ' + me.g + ', ' + me.b + ', ' + me.a + ')';
-    }
+    };
     
     /**
      * Converts an RGB color value to HSV. Conversion formula
@@ -2312,7 +2311,7 @@ function RGBColor(color_string){
             s: s,
             v: v
         };
-    }
+    };
     
     /*
      * hsl2rgb from http://codingforums.com/showthread.php?t=11156 
@@ -2320,7 +2319,7 @@ function RGBColor(color_string){
      */
     function hsl2rgb(h, s, l) {
 		var m1, m2, hue;
-		var r, g, b
+		var r, g, b;
 		s /=100;
 		l /= 100;
 		if (s == 0)
@@ -2391,5 +2390,5 @@ document.write('<style type="text/css">.cssSandpaper-initiallyHidden { visibilit
 
 
 
-EventHelpers.addPageLoadEvent('cssSandpaper.init')
+EventHelpers.addPageLoadEvent('cssSandpaper.init');
 

@@ -73,4 +73,3 @@ if ($stmt = $connection_moviedb->prepare($query)) {
 	$dompdf->render();
 	$dompdf->stream("sample.pdf", array("Attachment"=>0));
 }
-?>

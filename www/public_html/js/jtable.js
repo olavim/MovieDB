@@ -67,7 +67,7 @@
             function() {
 
             // page-content-table-tbody
-                var tbody = $("<tbody></tbody>")
+                var tbody = $("<tbody></tbody>");
 
             // page-content-table-tbody-tr
                 var currRow = settings.elementsPerPage * (i - 1);

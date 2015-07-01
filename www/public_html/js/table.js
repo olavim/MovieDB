@@ -5,7 +5,7 @@ $.getScript("js/jtable.js", function() {
         }).wrap("<b class=\"ui-table-cell-title\"></b>");
     });
 
-    var jtableWidthSet = new Array();
+    var widthSet = [];
 
     $(document).on("click", "th", function (event) {
         var id = $(event.target).text();
@@ -23,7 +23,7 @@ $.getScript("js/jtable.js", function() {
 
     $(document).one("pageshow", "#page-1", function () {
         $(this).find("tr").eq(0).find("th").each(function () {
-            jtableWidthSet.push($(this).width() + "px");
+            widthSet.push($(this).width() + "px");
         });
     });
 

@@ -48,3 +48,8 @@ div[data-role="page"] {
     border: 1px solid #bbb;
     padding: .6em;
 }
+
+/* remove chrome's autofill color */
+input:-webkit-autofill, input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}

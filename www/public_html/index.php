@@ -27,8 +27,8 @@ $s_pick 	= get('s_pick') ? "x" : "";
 	<link rel="stylesheet" type="text/css" href="styles/jquery.mobile-1.4.5.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/default.css">
 	<link rel="stylesheet" type="text/css" href="styles/jtable.css">
-	<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="js/table.js"></script>
 	<script type="text/javascript" src="js/navigation.js"></script>
 	<script type="text/javascript">

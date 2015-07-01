@@ -31,9 +31,9 @@ th.ui-highlight {
     background-color: #C52837;
     color: #fff;
     text-shadow: none;
-    -webkit-box-shadow: 0 0px 6px 1px rgba(0,0,0,.5);
-    -moz-box-shadow: 0 0px 6px 1px rgba(0,0,0,.5);
-    box-shadow: 0 0px 6px 1px rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 6px 1px rgba(0,0,0,.5);
+    box-shadow: 0 0 6px 1px rgba(0,0,0,.5);
     position: relative;
     z-index: 10;
 }
@@ -50,9 +50,9 @@ tr.picked td:first-of-type:before {
     position: absolute;
     left: -10px;
     top: 5%;
-    -webkit-box-shadow: 0 0px 6px 1px rgba(0,0,0,.3);
-    -moz-box-shadow: 0 0px 6px 1px rgba(0,0,0,.3);
-    box-shadow: 0 0px 6px 1px rgba(0,0,0,.3);
+    -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
+    box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
 }
 
 b.ui-table-cell-label, b.ui-table-cell-title {
@@ -73,9 +73,9 @@ b.ui-table-cell-label, b.ui-table-cell-title {
 
     table.ui-table-reflow tr td.ui-highlight {
         background-color: #fff;
-        -webkit-box-shadow: 0 0px 6px 1px rgba(0,0,0,.3);
-        -moz-box-shadow: 0 0px 6px 1px rgba(0,0,0,.3);
-        box-shadow: 0 0px 6px 1px rgba(0,0,0,.3);
+        -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
+        -moz-box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
+        box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
     }
 
     table.ui-table-reflow tr td .ui-table-cell-label,
