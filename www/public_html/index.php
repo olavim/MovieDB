@@ -31,7 +31,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
 	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="js/table.js"></script>
-	<script type="text/javascript" src="js/toggleClick.js"></script>
+	<script type="text/javascript" src="js/ToggleAction.js"></script>
 	<script type="text/javascript" src="js/navigation.js"></script>
 	<script type="text/javascript">
 		var jsonData;
@@ -44,7 +44,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
 				var panel = $('<div data-role="panel" id="nav-panel" data-display="overlay" data-position="left" data-theme="b" data-position-fixed="true" class="ui-responsive-panel"></div>');
 				panel.appendTo("body");
 			} else {
-				var page = $('<div data-role="page" data-theme="b" id="nav-page" data-next="#page-1"></div>');
+				var page = $('<div data-role="page" data-theme="a" id="nav-page" data-next="#page-1"></div>');
 				$("body").append(page);
 			}
 

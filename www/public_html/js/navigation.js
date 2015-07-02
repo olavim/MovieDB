@@ -16,16 +16,18 @@ $(document).on("swiperight", ".ui-page", function() {
     navprev($(this).jqmData("prev"));
 });
 
-$(document).on('pageshow', '.ui-page:not(#nav-page)', function () {
-    $("#nav-button").toggleClick(function() {
-        var next = "#" + $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
-        $("#nav-page").attr("data-next", next);
-        $("#nav-page").jqmData("next", next);
-        navprev($("#nav-page"));
-    }, function() {
-        navnext($("#nav-page").jqmData("next"));
+if (isMobile()) {
+    $(document).on('pageshow', '.ui-page:not(#nav-page)', function () {
+        $("#nav-button").toggleAction("click", {clear:true}, function() {
+            var next = "#" + $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
+            $("#nav-page").attr("data-next", next);
+            $("#nav-page").jqmData("next", next);
+            navprev($("#nav-page"));
+        }, function() {
+            navnext($("#nav-page").jqmData("next"));
+        });
     });
-});
+}
 
 function isMobile() {
     try{
