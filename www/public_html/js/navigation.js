@@ -4,39 +4,43 @@ $(document).one('pagecreate', function() {
     });
 });
 
-$(document).on('change', '#page-select', function () {
+$(document).on('change', '#nav-select', function () {
     location.hash = $(this).find('option:selected').val();
 });
 
-$(document).on('click', '#nav-btn-next', function () {
-    var next = $($('#page-select option:selected').val()).jqmData("next");
-    navnext(next);
-});
-
-$(document).on('click', '#nav-btn-prev', function () {
-    var prev = $($('#page-select').find('option:selected').val()).jqmData("prev");
-    navprev(prev);
-});
-
 $(document).on("swipeleft", ".ui-page", function() {
-    var next = $(this).jqmData("next");
-    navnext(next);
+    navnext($(this).jqmData("next"));
 });
 
 $(document).on("swiperight", ".ui-page", function() {
-    var prev = $(this).jqmData("prev");
-    navprev(prev);
+    navprev($(this).jqmData("prev"));
 });
+
+$(document).on('pageshow', '.ui-page:not(#nav-page)', function () {
+    $("#nav-button").toggleClick(function() {
+        var next = "#" + $(":mobile-pagecontainer").pagecontainer("getActivePage").attr("id");
+        $("#nav-page").attr("data-next", next);
+        $("#nav-page").jqmData("next", next);
+        navprev($("#nav-page"));
+    }, function() {
+        navnext($("#nav-page").jqmData("next"));
+    });
+});
+
+function isMobile() {
+    try{
+        document.createEvent("TouchEvent");
+        return true;
+    } catch(e){
+        return false;
+    }
+}
 
 function navnext(next) {
     if (next) {
         $(":mobile-pagecontainer").pagecontainer("change", next, {
             transition: "slide"
         });
-
-        $(".ui-table-cell-label").parent().contents().filter(function () {
-            return this.nodeType == 3;
-        }).wrap("<b class=\"ui-table-cell-title\"></b>");
     }
 }
 
@@ -55,6 +59,7 @@ function hashChanged() {
         hash = location.hash;
     }
 
-    $('#page-select').find('option[value=' + hash + ']').prop('selected', 'selected');
-    $('#page-select').selectmenu("refresh", true);
+    if (hash !== "#nav-page") {
+        $('#page-number').text("Page " + hash.substr(6));
+    }
 }

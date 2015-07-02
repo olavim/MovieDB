@@ -19,7 +19,7 @@ td, th {
 
 th:hover {
     cursor: pointer;
-    background-color: #eee;
+    background-color: #f8f8f8;
 }
 
 th:active {

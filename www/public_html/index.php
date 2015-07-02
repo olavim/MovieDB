@@ -23,6 +23,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
 	<title>Movie Database</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="styles/global.css">
 	<link rel="stylesheet" type="text/css" href="styles/jquery.mobile-1.4.5.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/default.css">
@@ -30,15 +31,23 @@ $s_pick 	= get('s_pick') ? "x" : "";
 	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="js/table.js"></script>
+	<script type="text/javascript" src="js/toggleClick.js"></script>
 	<script type="text/javascript" src="js/navigation.js"></script>
 	<script type="text/javascript">
 		var jsonData;
 
-		$(document).on("pageinit", function() {
-			$("[data-role='header'], [data-role='footer']").toolbar({theme: "a"});
-		});
-
 		$(document).one('pageinit', function() {
+			var navButton = $('<a href="#nav-panel" id="nav-button" data-role="button" class="no-background ui-btn ui-icon-bars ui-nodisc-icon ui-alt-icon ui-mobile-safe ui-btn-left ui-btn-icon-left">Navigation</a>');
+			navButton.insertBefore("#page-number");
+
+			if (!isMobile()) {
+				var panel = $('<div data-role="panel" id="nav-panel" data-display="overlay" data-position="left" data-theme="b" data-position-fixed="true" class="ui-responsive-panel"></div>');
+				panel.appendTo("body");
+			} else {
+				var page = $('<div data-role="page" data-theme="b" id="nav-page" data-next="#page-1"></div>');
+				$("body").append(page);
+			}
+
 			$.ajax({
 				url: "json_table.php",
 				type: "get",
@@ -52,19 +61,34 @@ $s_pick 	= get('s_pick') ? "x" : "";
 				},
 				beforeSend: function() { showLoader(); },
 				success: function (data) {
-					jsonData = data;
-					$('body').jtable(data, {
+					jsonData = jQuery.parseJSON(data);;
+					$('body').jtable(jsonData, {
 						orderBy: "<?=$order_by?>",
 						asc: <?=$order_direction == "asc" ? "true" : "false"?>,
 						pageSelect: "#page-select"
 					});
 
+					var view = $('<ul data-role="listview"></ul>');
+					for (var i = 1; i <= Math.ceil(jsonData.length / 20); i++) {
+						view.append($('<li><a href="#page-'+i+'" data-transition="slide">Page ' + i + '</a></li>'));
+					}
+
+					if (!isMobile()) {
+						$("#nav-panel").append(view);
+					} else {
+						$("#nav-page").append(view);
+					}
+
+					view.listview();
 					hideLoader();
 				},
 				error: function (data) {
 					$('body').html(data);
 				}
 			});
+
+			$("[data-role='header'], [data-role='footer']").toolbar({theme: "a"});
+			$("body>[data-role='panel']").panel();
 		});
 
 		$(document).on("pageshow", ".ui-page", function() {
@@ -115,28 +139,31 @@ $s_pick 	= get('s_pick') ? "x" : "";
 <input type="hidden" id="order-by" name="order_by" value="<?=$order_by?>">
 <input type="hidden" id="order-direction" name="order_direction" value="<?=$order_direction?>">
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
-	<div id="page-number" data-role="controlgroup" data-type="horizontal" class="ui-btn-left ui-group-theme-a">
+	<!--
+	<div id="page-number" data-role="controlgroup" data-type="horizontal" class="ui-btn-left ui-group-theme-b">
 		<a class="ui-btn ui-icon-carat-l ui-corner-all ui-btn-icon-notext" id="nav-btn-prev">Previous</a><!--
-	 --><label for="page-select" class="ui-hidden-accessible">Page</label><!--
-	 --><select name="page-select" id="page-select" data-native-menu="false" data-theme="a">
+	 -- <label for="page-select" class="ui-hidden-accessible">Page</label><!--
+	 -- <select name="page-select" id="page-select" data-native-menu="false" data-theme="b">
 			<option>Page 1</option>
 		</select><!--
-	 --><a class="ui-btn ui-icon-carat-r ui-corner-all ui-btn-icon-notext" id="nav-btn-next">Next</a>
+	 -- <a class="ui-btn ui-icon-carat-r ui-corner-all ui-btn-icon-notext" id="nav-btn-next">Next</a>
 	</div>
 	<div id="controls-right" data-role="controlgroup" data-type="horizontal" class="ui-btn-right ui-group-theme-a ui-mobile-safe">
 		<a href="search.html" rel="external" class="ui-btn ui-btn-icon-right ui-icon-search ui-corner-all">Search</a>
 		<a href="#" onclick="printPage()" class="ui-btn ui-btn-icon-right ui-icon-printer ui-corner-all">Print</a>
 	</div>
-	<h1>&nbsp;</h1>
+	<h1>&nbsp;</h1>-->
+	<h1 class="ui-title" id="page-number">Page 1</h1>
+	<a href="#" data-role="button" class="no-background ui-btn ui-icon-gear ui-nodisc-icon ui-alt-icon ui-mobile-safe ui-btn-right ui-btn-icon-right">Menu</a>
 </div>
 <div data-role="page"></div>
-<div data-role="footer" data-position="fixed" id="footer" data-tap-toggle="false">
+<!--<div data-role="footer" data-position="fixed" id="footer" data-tap-toggle="false">
 	<div data-role="controlgroup" data-type="horizontal" class="footer-button-left ui-group-theme-a ui-mobile-safe">
 		<a href="#" class="ui-btn ui-btn-icon-right ui-icon-plus ui-corner-all">New Movie</a>
 		<a href="#" class="ui-btn ui-btn-icon-right ui-icon-edit ui-corner-all ui-state-disabled">Edit</a>
 		<a href="#" class="ui-btn ui-btn-icon-right ui-icon-delete ui-corner-all ui-state-disabled">Delete</a>
 	</div>
 	<h1>&nbsp;</h1>
-</div>
+</div>-->
 </body>
 </html>

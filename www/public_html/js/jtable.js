@@ -13,8 +13,6 @@
             callback: function() {}
         }, options);
 
-        data = jQuery.parseJSON(data);
-
         sortJSON(data, settings.orderBy, settings.asc);
 
         var keys = settings.headings.split(",");
