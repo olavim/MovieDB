@@ -37,12 +37,11 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		var jsonData;
 
 		$(document).one('pageinit', function() {
-			var navButton = $('<a href="#nav-panel" id="nav-button" data-role="button" class="no-background ui-btn ui-icon-bars ui-nodisc-icon ui-alt-icon ui-mobile-safe ui-btn-left ui-btn-icon-left">Navigation</a>');
-			navButton.insertBefore("#page-number");
-
 			if (!isMobile()) {
-				var panel = $('<div data-role="panel" id="nav-panel" data-display="overlay" data-position="left" data-theme="b" data-position-fixed="true" class="ui-responsive-panel"></div>');
-				panel.appendTo("body");
+				var navpanel = $('<div data-role="panel" id="nav-panel" data-display="overlay" data-position="left" data-theme="b" data-position-fixed="true" class="ui-responsive-panel"></div>');
+				var menupanel = $('<div data-role="panel" id="menu-panel" data-display="overlay" data-position="left" data-theme="b" data-position-fixed="true" class="ui-responsive-panel"></div>');
+				navpanel.appendTo("body");
+				menupanel.appendTo("body");
 			} else {
 				var page = $('<div data-role="page" data-theme="a" id="nav-page" data-next="#page-1"></div>');
 				$("body").append(page);
@@ -153,6 +152,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		<a href="#" onclick="printPage()" class="ui-btn ui-btn-icon-right ui-icon-printer ui-corner-all">Print</a>
 	</div>
 	<h1>&nbsp;</h1>-->
+	<a href="#nav-panel" id="nav-button" data-role="button" class="no-background ui-btn ui-icon-bars ui-nodisc-icon ui-alt-icon ui-mobile-safe ui-btn-left ui-btn-icon-left">Navigation</a>
 	<h1 class="ui-title" id="page-number">Page 1</h1>
 	<a href="#" data-role="button" class="no-background ui-btn ui-icon-gear ui-nodisc-icon ui-alt-icon ui-mobile-safe ui-btn-right ui-btn-icon-right">Menu</a>
 </div>
