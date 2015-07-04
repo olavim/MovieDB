@@ -1,35 +1,35 @@
-$.getScript("js/jtable.js", function() {
-    $(document).bind("pagecreate", function () {
-        $(".ui-table-cell-label").parent().contents().filter(function () {
-            return this.nodeType == 3;
-        }).wrap("<b class=\"ui-table-cell-title\"></b>");
-    });
+$(document).bind("pagecreate", function () {
+    $(".ui-table-cell-label").parent().contents().filter(function () {
+        return this.nodeType == 3;
+    }).wrap("<b class=\"ui-table-cell-title\"></b>");
+});
 
-    var widthSet = [];
+var widthSet = [];
 
-    $(document).on("click", "th", function (event) {
-        var id = $(event.target).text();
-        orderTable(id, widthSet);
-    });
+$(document).on("click", "th", function (event) {
+    var id = $(event.target).text();
+    orderTable(id, widthSet);
+});
 
-    $(document).on("click", "td .ui-table-cell-label", function (event) {
-        var id = $(event.target).text();
-        orderTable(id, widthSet);
+$(document).on("click", "td .ui-table-cell-label", function (event) {
+    $.mobile.loading('show');
+    $(this).animate({color: "#C52837"}, function() {
+        orderTable($(event.target).text(), widthSet);
     });
+});
 
-    $(window).on("orientationchange", function (event) {
-        promoteSelectedColumn(event.orientation);
-    });
+$(window).on("orientationchange", function (event) {
+    promoteSelectedColumn(event.orientation);
+});
 
-    $(document).one("pageshow", "#page-1", function () {
-        $(this).find("tr").eq(0).find("th").each(function () {
-            widthSet.push($(this).width() + "px");
-        });
+$(document).one("pageshow", "#page-1", function () {
+    $(this).find("tr").eq(0).find("th").each(function () {
+        widthSet.push($(this).width() + "px");
     });
+});
 
-    $(document).one("pagebeforeshow", "#page-1", function () {
-        $(window).orientationchange();
-    });
+$(document).one("pagebeforeshow", "#page-1", function () {
+    $(window).orientationchange();
 });
 
 function orderTable(id, widthSet) {

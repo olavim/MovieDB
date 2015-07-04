@@ -56,12 +56,5 @@ function navprev(prev) {
 }
 
 function hashChanged() {
-    var hash = "#page-1";
-    if (location.hash) {
-        hash = location.hash;
-    }
-
-    if (hash !== "#nav-page") {
-        $('#page-number').text("Page " + hash.substr(6));
-    }
+    $('#page-number').text($(":mobile-pagecontainer").pagecontainer("getActivePage").attr("title"));
 }

@@ -23,8 +23,8 @@ if (login_check($mysqli) != true) {
     <link rel="stylesheet" href="<?=$path?>/styles/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" href="<?=$path?>/styles/global.css">
     <link rel="stylesheet" href="<?=$path?>/styles/default.css">
-    <link rel="stylesheet" href="<?=$path?>/styles/login.css">
-    <script src="<?=$path?>/js/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="<?=$path?>/styles/form.css">
+    <script src="<?=$path?>/js/jquery-2.1.4.min.js"></script>
     <script src="<?=$path?>/js/jquery.mobile-1.4.5.min.js"></script>
     <script src="<?=$path?>/js/sha512.js"></script>
     <script src="<?=$path?>/js/forms.js"></script>
@@ -32,7 +32,7 @@ if (login_check($mysqli) != true) {
 <body>
 <div data-role="page">
     <div data-role="content">
-        <div id="login" class="input-form">
+        <div class="form input-form">
             <h1>Log-in</h1>
             <form method="post" action="" data-ajax="false">
                 <div class="input-section input-section-text">

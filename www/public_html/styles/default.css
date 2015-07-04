@@ -37,36 +37,6 @@ span.radio-box {
 	background-color: #555;
 }
 
-.input-page {
-	min-height: 100px !important;
-}
-
-.input-form .input-section-text label {
-	font-size: 9pt;
-	font-weight: bold;
-	padding: 4px;
-	margin: 0;
-}
-
-.input-form .input-section {
-	margin-bottom: 1.5em;
-}
-
-.input-form .input-section-text {
-	background-color: #444;
-	text-shadow: none;
-	color: #fff;
-}
-
-.input-form .input-section input[type="text"], .input-form .input-section .ui-input-text {
-	margin: 0;
-	border-radius: 0;
-}
-
-.input-form .input-section input {
-	border-radius: 0;
-}
-
 .ui-button {
 	background-color: #333;
 	color: #fff;
@@ -136,27 +106,13 @@ a[data-role="button"].no-background.ui-btn-icon-notext {
 	-webkit-overflow-scrolling: touch;
 }
 
-body > div[data-role="header"] > .ui-select {
-	display: none;
+.ui-icon-dots:after {
+	background-image: url("images/icons-svg/three-dots.svg");
+	background-size: 18px 18px;
 }
 
-@media screen and (min-device-width: 800px) {
-	div.input-form label {
-		font-size: 8pt;
-	}
-
-	div.input-form {
-		padding: 2em;
-		width: 400px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	div.input-form  div.input-section input[type="text"] {
-		font-size: 10pt;
-		border: 1px solid #ccc;
-		border-radius: 2px;
-	}
+body > div[data-role="header"] > .ui-select {
+	display: none;
 }
 
 @media screen and (max-device-width: 480px) {

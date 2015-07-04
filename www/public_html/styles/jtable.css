@@ -42,8 +42,8 @@ tr.picked td {
     position: relative;
 }
 
-tr.picked td:first-of-type:before {
-    content: " ";
+tr.picked td:first-of-type:after {
+    content: "";
     height: 90%;
     width: 5px;
     background-color: #C52837;
@@ -69,6 +69,7 @@ b.ui-table-cell-label, b.ui-table-cell-title {
         width: 100%;
         border-bottom: 1px solid #ddd;
         font-weight: bold;
+        text-shadow: none;
     }
 
     table.ui-table-reflow tr td.ui-highlight {
@@ -92,7 +93,7 @@ b.ui-table-cell-label, b.ui-table-cell-title {
         color: #666;
     }
 
-    table.ui-table-reflow tr td:not(.ui-highlight) .ui-table-cell-label {
+    table.ui-table-reflow tr td .ui-table-cell-label {
         cursor: pointer;
         text-decoration: underline;
     }
@@ -104,6 +105,18 @@ b.ui-table-cell-label, b.ui-table-cell-title {
     table.ui-table-reflow tr td:first-of-type .ui-table-cell-label {
         min-width: 0 !important;
         color: #000;
+    }
+
+    table.ui-table-reflow tr td .ui-table-cell-label:active {
+        min-width: 0 !important;
+        color: #000;
+
+        -webkit-transition:text-shadow 0.5s ease-in-out;
+        -moz-transition:text-shadow 0.5s ease-in-out;
+        -o-transition:text-shadow 0.5s ease-in-out;
+        -ms-transition:text-shadow 0.5s ease-in-out;
+        transition:text-shadow 0.5s ease-in-out;
+        text-shadow:10px 10px 2px #444;
     }
 
     table.ui-table-reflow tr td:first-of-type .ui-table-cell-title {

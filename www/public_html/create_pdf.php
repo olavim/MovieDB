@@ -1,10 +1,12 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/db_connect.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/functions.php';
-include_once "dompdf/dompdf_config.inc.php";
+include_once '../include/db_connect.php';
+include_once '../include/functions.php';
 include_once "sql.php";
+include_once "dompdf/dompdf_config.inc.php";
 
 sec_session_start();
+
+header('Content-type: application/pdf');
 
 function get($s) {
 	return isset($_GET[$s]) ? $_GET[$s] : "";
@@ -71,5 +73,6 @@ if ($stmt = $connection_moviedb->prepare($query)) {
 	$dompdf = new DOMPDF();
 	$dompdf->load_html($html);
 	$dompdf->render();
-	$dompdf->stream("sample.pdf", array("Attachment"=>0));
+	echo $dompdf->output();
+	//$dompdf->stream("sample.pdf", array("Attachment"=>0));
 }

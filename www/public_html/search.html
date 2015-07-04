@@ -4,19 +4,20 @@
 	<title>Movie Database - Search</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="http://fonts.googleapis.com/css?family=Roboto:100" rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="styles/jquery.mobile-1.4.5.min.css">
-	<link rel="stylesheet" type="text/css" href="styles/default.css">
-	<link rel="stylesheet" type="text/css" href="styles/global.css">
-	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+	<link rel="stylesheet" href="styles/default.css">
+	<link rel="stylesheet" href="styles/form.css">
+	<link rel="stylesheet" href="styles/global.css">
+	<script src="js/jquery-2.1.4.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <body>
 	<div data-role="page" id="search-page">
-		<div data-role="header" data-position="fixed">
-			<h1>Search</h1>
-		</div>
 		<div data-role="content">
-			<div class="input-form">
+			<div class="form input-form">
+				<h1>Search</h1>
 				<form method="get" action="./" data-ajax="false">
 					<div class="input-section input-section-text">
 						<label for="s_director">DIRECTOR</label>
@@ -31,12 +32,10 @@
 						<input type="text" id="s_title" name="s_title" placeholder="...">
 					</div>
 					<div class="input-section">
-						<label>
-							<input type="checkbox" id="s_pick" name="s_pick">
-							<span class="checkbox-label">Show only picked</span>
-						</label>
+						<input type="checkbox" id="s_pick" name="s_pick" data.mini="true">
+						<label for="s_pick">Show only picked</label>
 					</div>
-					<div>
+					<div style="overflow:hidden">
 						<button class="ui-button left" data-role="none" onclick="location.href='./'" style="width:45%">Cancel</button>
 						<button class="ui-button right" data-role="none" onclick="document.forms[0].submit()" style="width:45%">Search</button>
 					</div>
