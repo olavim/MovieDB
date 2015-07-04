@@ -7,7 +7,6 @@
             headings: "director,year,title",
             orderBy: "title",
             asc: true,
-            transition: "fade",
             widthSet: ["","",""],
             pageSelect: null,
             callback: function() {}
@@ -59,7 +58,7 @@
 
             pages +=
                 '<div data-role="page" title="Page '+i+'" id="page-'+i+'" data-prev="'+prevPage+'" data-next="'+nextPage+'">' +
-                    '<div data-role="content">' +
+                    '<div role="main" class="ui-content">' +
                         '<table data-role="table" class="table-stripe ui-responsive ui-shadow ui-body-d">' +
                             '<thead>' +
                                 thead +
@@ -75,16 +74,6 @@
         }
 
         this.append($(pages));
-
-        if (settings.pageSelect) {
-            var options = '';
-            for (var i = 1; i <= numPages; i++) {
-                options += '<option value="page-' + i + '">Page ' + i + '</option>';
-            }
-            $(settings.pageSelect).append($(options));
-        }
-
-        $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: settings.transition});
 
         settings.callback.call(this); // brings the scope to the callback
 

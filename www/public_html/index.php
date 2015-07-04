@@ -42,19 +42,13 @@ $s_pick 	= get('s_pick') ? "x" : "";
 	<script type="text/javascript">
 		var jsonData;
 
-		$(document).one('pageinit', function() {
-			if (!isMobile()) {
-				var navpanel = $('<div data-role="panel" id="nav-panel" title="Navigation" data-display="overlay" data-position="left" data-theme="b" data-position-fixed="true" class="ui-responsive-panel"></div>');
-				navpanel.appendTo("body");
-			} else {
-				var page = $('<div data-role="page" data-theme="a" id="nav-page" data-next="#page-1"></div>');
-				$("body").append(page);
-			}
-
-			$("#menu-popup").enhanceWithin().popup();
+		$(function () {
 			$("[data-role='header'], [data-role='footer']").toolbar({theme: "a"});
+			$("#menu-popup").enhanceWithin().popup();
 			$("body>[data-role='panel']").panel();
+		});
 
+		$(document).one('pageinit', function() {
 			setTimeout(function() {
 				$.ajax({
 					url: "json_table.php",
@@ -71,13 +65,11 @@ $s_pick 	= get('s_pick') ? "x" : "";
 						showLoader();
 					},
 					success: function (data) {
-						$.mobile.loading('show');
 						jsonData = jQuery.parseJSON(data);
+
 						$('body').jtable(jsonData, {
 							orderBy: "<?=$order_by?>",
-							asc: <?=$order_direction == "asc" ? "true" : "false"?>,
-							pageSelect: "#page-select",
-							transition: "none"
+							asc: <?=$order_direction == "asc" ? "true" : "false"?>
 						});
 
 						var view = $('<ul data-role="listview"></ul>');
@@ -93,6 +85,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
 
 						view.listview();
 						hideLoader();
+						$(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "fade"});
 					},
 					error: function (data) {
 						$('body').html(data);
@@ -101,30 +94,17 @@ $s_pick 	= get('s_pick') ? "x" : "";
 			}, 100);
 		});
 
-		$(document).on("pageshow", ".ui-page", function() {
-			$("body").css("overflow", "hidden");
-			setTimeout(function() {
-				$(".ui-page").css("min-height", getContentHeight() + "px");
-				$("body").css("overflow", "auto");
-			}, 100);
-		});
-
-		function getContentHeight() {
+		function contentHeight() {
 			var screen = $.mobile.getScreenHeight();
 			var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
 			var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
-			return screen - header - footer;
-		}
-
-		function getPageHeight() {
-			var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height();
-			var content = getContentHeight() - contentCurrent;
-			return content;
+			var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height(),
+				content = screen - header - footer - contentCurrent;
+			$(".ui-content").height(content);
 		}
 
 		function printPage() {
-			$(".ui-content").height(getPageHeight());
-			$("#pdf-page").find("div").html('<iframe id="pdf-object" src="create_pdf.php?<?="director=$s_director&year=$s_year&title=$s_title&pick=$s_pick"?>" style="position:absolute;width:100%;height:100%" frameborder="0">');
+			$("#pdf-page").find(".ui-content").html('<iframe id="pdf-object" src="create_pdf.php?<?="director=$s_director&year=$s_year&title=$s_title&pick=$s_pick"?>" style="height:inherit;width:100%;border:none;margin:0;padding:0"></iframe>');
 			navnext($("#pdf-page"));
 			$.mobile.loading("show");
 			$("#pdf-object").load(function() {
@@ -177,9 +157,8 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		<li><a href="?logout=1" rel="external">Log out</a></li>
 	</ul>
 </div>
-<div data-role="page" id="pdf-page" title="Print">
-	<div data-role="content" style="position:relative;padding:0"></div>
-</div>
-<div data-role="page"></div>
+<div data-role="panel" id="nav-panel" title="Navigation" data-display="overlay" data-position="left" data-theme="b" data-position-fixed="true" class="ui-responsive-panel"></div>
+<div data-role="page" id="pdf-page" title="Print"><div role="main" class="ui-content"></div></div>
+<div data-role="page" data-theme="a" id="nav-page" data-next="#page-1"></div>
 </body>
 </html>

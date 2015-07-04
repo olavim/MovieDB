@@ -1,3 +1,22 @@
+html, body, #pdf-page { /* specify page */
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#pdf-page, #pdf-page * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#pdf-page .ui-content {
+	padding: 0;
+	height: inherit;
+	overflow-y: hidden;
+}
+
 body {
 	background-image: url('images/rough-diagonal.png') !important;
 	background-color: #fff;
