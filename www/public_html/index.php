@@ -117,14 +117,8 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		}
 
 		function getPageHeight() {
-			var screen = $.mobile.getScreenHeight();
-			var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
-			var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
-
-			/* content div has padding of 1em = 16px (32px top+bottom). This step
-			 can be skipped by subtracting 32px from content var directly. */
 			var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height();
-			var content = screen - header - footer - contentCurrent;
+			var content = getContentHeight() - contentCurrent;
 			return content;
 		}
 
@@ -167,20 +161,6 @@ $s_pick 	= get('s_pick') ? "x" : "";
 <input type="hidden" id="order-by" name="order_by" value="<?=$order_by?>">
 <input type="hidden" id="order-direction" name="order_direction" value="<?=$order_direction?>">
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
-	<!--
-	<div id="page-number" data-role="controlgroup" data-type="horizontal" class="ui-btn-left ui-group-theme-b">
-		<a class="ui-btn ui-icon-carat-l ui-corner-all ui-btn-icon-notext" id="nav-btn-prev">Previous</a><!--
-	 -- <label for="page-select" class="ui-hidden-accessible">Page</label><!--
-	 -- <select name="page-select" id="page-select" data-native-menu="false" data-theme="b">
-			<option>Page 1</option>
-		</select><!--
-	 -- <a class="ui-btn ui-icon-carat-r ui-corner-all ui-btn-icon-notext" id="nav-btn-next">Next</a>
-	</div>
-	<div id="controls-right" data-role="controlgroup" data-type="horizontal" class="ui-btn-right ui-group-theme-a ui-mobile-safe">
-		<a href="search.html" rel="external" class="ui-btn ui-btn-icon-right ui-icon-search ui-corner-all">Search</a>
-		<a href="#" onclick="printPage()" class="ui-btn ui-btn-icon-right ui-icon-printer ui-corner-all">Print</a>
-	</div>
-	<h1>&nbsp;</h1>-->
 	<a href="#nav-panel" id="nav-button" data-role="button" class="no-background ui-btn ui-icon-bars ui-nodisc-icon ui-alt-icon ui-mobile-safe ui-btn-left ui-btn-icon-left">Navigation</a>
 	<h1 class="ui-title" id="page-number">Page 1</h1>
 	<a href="#menu-popup" data-rel="popup" data-role="button" class="no-background ui-btn ui-icon-dots ui-nodisc-icon ui-alt-icon ui-mobile-safe ui-btn-right ui-btn-icon-right">Menu</a>
