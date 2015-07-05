@@ -56,6 +56,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
 					contentType: 'application/json',
 					dataType: 'html',
 					data: {
+						select: "id,director,year,title,pick",
 						order: "<?=$order_by?>",
 						dir: "<?=$order_direction?>",
 						search: "<?=$s_director.','.$s_year.','.$s_title.','.$s_pick?>"
