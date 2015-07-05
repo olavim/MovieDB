@@ -39,7 +39,6 @@ function get_s($s, $default = "")
 }
 
 $select = get_s('select');
-$from = "movie";
 $search = get_s('search');
 
 $select_arr = explode(',', $select);
@@ -52,6 +51,8 @@ if (count($select_arr) < count($search_arr)) {
 while (count($select_arr) > count($search_arr)) {
     array_push($search_arr, "");
 }
+
+
 
 $where = "";
 for ($i = 0; $i < count($select_arr); $i++) {
@@ -69,7 +70,7 @@ if ($order_dir != 'asc' && $order_dir != 'desc') {
     die("Error: invalid ORDER BY: value must be 'asc' or 'desc'");
 }
 
-$sql = "SELECT $select FROM $from WHERE $where ORDER BY $order_by $order_dir";
+$sql = "SELECT $select FROM movie WHERE $where ORDER BY $order_by $order_dir";
 $result = mysqli_query($connection_moviedb, $sql);
 
 if ($result) {

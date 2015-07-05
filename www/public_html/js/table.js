@@ -64,10 +64,22 @@ function orderTable(id, widthSet) {
     });
 
     $(window).orientationchange();
+    $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "none"});
+
+    contentHeight();
 }
 
 var swapIndex = -1;
 var otherIndex = -1;
+
+function contentHeight() {
+    var screen = $.mobile.getScreenHeight();
+    var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
+    var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
+    var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height(),
+        content = screen - header - footer - contentCurrent - 1000;
+    $(".ui-page").css("min-height", content);
+}
 
 function promoteSelectedColumn(orientation) {
     var width = (orientation === "landscape") ? screen.height : screen.width;

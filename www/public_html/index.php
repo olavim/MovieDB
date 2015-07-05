@@ -56,7 +56,6 @@ $s_pick 	= get('s_pick') ? "x" : "";
 					contentType: 'application/json',
 					dataType: 'html',
 					data: {
-						select: "director,year,title,pick",
 						order: "<?=$order_by?>",
 						dir: "<?=$order_direction?>",
 						search: "<?=$s_director.','.$s_year.','.$s_title.','.$s_pick?>"
@@ -93,15 +92,6 @@ $s_pick 	= get('s_pick') ? "x" : "";
 				});
 			}, 100);
 		});
-
-		function contentHeight() {
-			var screen = $.mobile.getScreenHeight();
-			var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
-			var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
-			var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height(),
-				content = screen - header - footer - contentCurrent;
-			$(".ui-content").height(content);
-		}
 
 		function printPage() {
 			$("#pdf-page").find(".ui-content").html('<iframe id="pdf-object" src="create_pdf.php?<?="director=$s_director&year=$s_year&title=$s_title&pick=$s_pick"?>" style="height:inherit;width:100%;border:none;margin:0;padding:0"></iframe>');
@@ -150,7 +140,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		<li><a href="search.html" rel="external">Search</a></li>
 		<li><a href="#" onclick="printPage()">Print</a></li>
 		<li data-role="list-divider"></li>
-		<li><a href="#">Add Movie</a></li>
+		<li><a href="new_movie.html" rel="external">Add Movie</a></li>
 		<li><a href="#">Edit Movie</a></li>
 		<li><a href="#">Delete Movie</a></li>
 		<li data-role="list-divider"></li>
