@@ -42,7 +42,7 @@ while (count($select_arr) > count($search_arr)) {
 }
 
 for ($i = 0; $i < count($search_arr); $i++) {
-    $search_arr[$i] = '%'.$search_arr[$i].'%';
+    $search_arr[$i] = "%".$search_arr[$i]."%";
 }
 
 $query = "SELECT " . $select . " FROM movie WHERE ";
@@ -59,6 +59,4 @@ $query .= ' ORDER BY ' . $order_by . ' ' . $order_dir;
 $binder = new MySQLiBinder($query, $params, $search_arr);
 if ($result = $binder->execute($connection_moviedb)) {
     echo json_encode($result);
-} else {
-    printf("Errormessage: %s\n", $connection_moviedb->error);
 }

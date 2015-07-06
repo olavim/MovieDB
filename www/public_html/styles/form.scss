@@ -1,0 +1,103 @@
+@mixin box-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
+div[data-role="page"] {
+    background-image: url('images/gray-lines.png') !important;
+    background-color: #755d39;
+}
+
+.form {
+    @include box-shadow(0 0 20px 0 rgba(0, 0, 0, .4));
+    font-family: 'Open Sans', Tahoma, Arial, Helvetica, sans-serif;
+    background-color: #eee;
+    padding: 2em;
+    border: 1px solid #666;
+    border-radius: 5px;
+    margin-top: 1em;
+}
+
+.form h1 {
+    font-family: 'Roboto', 'Open Sans', Tahoma, Arial, Helvetica, sans-serif;
+    font-weight: 100;
+    text-align: center;
+    font-size: 3em;
+    color: #888;
+    margin-top: .5em;
+    margin-bottom: 1em;
+}
+
+.form .ui-button {
+    width: 100%;
+    height: 50px;
+    background-color: #09f;
+    border-color: #06c;
+    padding: .5em;
+    font-weight: bold;
+}
+
+.form .ui-button:hover {
+    background-color: #1af;
+    border-color: #07d;
+}
+
+.form .ui-button:focus {
+    @include box-shadow(0 0 8px 4px rgba(0, 200, 255, .4));
+}
+
+.ui-input-text {
+    border: none;
+}
+
+/* remove chrome's autofill color */
+input:-webkit-autofill, input:-webkit-autofill:focus {
+    -webkit-box-shadow: inset 0 0 0 1000px white;
+}
+
+.input-page {
+    min-height: 100px !important;
+}
+
+.input-section-text label {
+    @include box-shadow(0 0 10px 0 rgba(0, 0, 0, .5));
+    font-size: 9pt;
+    font-weight: bold;
+    padding: 4px;
+    margin: 0;
+}
+
+.input-section {
+    margin-bottom: 1.5em;
+}
+
+.input-section-text {
+    background-color: #444;
+    text-shadow: none;
+    color: #fff;
+}
+
+.ui-input-text, input[type="text"] {
+    margin: 0;
+    border-radius: 0;
+}
+
+input[type="text"], .input[type="password"] {
+    font-size: 1em;
+    border: 1px solid #ccc;
+    padding: .6em;
+}
+
+input {
+    border-radius: 0;
+}
+
+@media screen and (min-device-width: 800px) {
+    .input-form {
+        padding: 2em;
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

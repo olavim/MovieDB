@@ -47,3 +47,7 @@ crashlytics-build.properties
 
 # Secure, user specific content
 secure.php
+
+# Sass
+.sass-cache
+*.css.map

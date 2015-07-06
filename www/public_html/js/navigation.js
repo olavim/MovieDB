@@ -56,5 +56,5 @@ function navprev(prev) {
 }
 
 function hashChanged() {
-    $('#page-number').text($(":mobile-pagecontainer").pagecontainer("getActivePage").attr("title"));
+    $('#page-number').text($(":mobile-pagecontainer").pagecontainer("getActivePage").jqmData("name"));
 }

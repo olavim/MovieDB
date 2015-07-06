@@ -13,9 +13,12 @@ $(document).on("click", "th", function (event) {
 
 $(document).on("click", "td .ui-table-cell-label", function (event) {
     $.mobile.loading('show');
-    $(this).animate({color: "#C52837"}, function() {
-        orderTable($(event.target).text(), widthSet);
+    $(this).css({
+        "background": "url(styles/images/icons-svg/carat-r-black.svg) no-repeat 6px center"
     });
+    setTimeout(function() {
+        orderTable($(event.target).text(), widthSet);
+    }, 200);
 });
 
 $(window).on("orientationchange", function (event) {
@@ -30,6 +33,16 @@ $(document).one("pageshow", "#page-1", function () {
 
 $(document).one("pagebeforeshow", "#page-1", function () {
     $(window).orientationchange();
+});
+
+$(document).on("click", "tr", function() {
+    $(".selected").not(this).removeClass("selected");
+    $(this).toggleClass("selected");
+    var footer = $("div:jqmData(role='footer')");
+    if (($(this).hasClass("selected") && !footer.is(":visible")) ||
+        (!$(this).hasClass("selected") && footer.is(":visible"))) {
+        footer.slideToggle("fast");
+    }
 });
 
 function orderTable(id, widthSet) {

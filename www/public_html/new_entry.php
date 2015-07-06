@@ -1,3 +1,37 @@
+<?php
+include_once '../include/db_connect.php';
+include_once '../include/functions.php';
+include_once 'sql.php';
+
+sec_session_start();
+
+if (isset($_POST['director'], $_POST['year'], $_POST['title'])) {
+    if ($stmt = $connection_moviedb->prepare("INSERT INTO movie (director, year, title, pick) VALUES (?, ?, ?, ?)")) {
+        $stmt->bind_param("ssss", $director, $year, $title, $pick);
+        $director = $_POST['director'];
+        $year = $_POST['year'];
+        $title = $_POST['title'];
+        $pick = isset($_POST['pick']) ? "x" : "";
+
+        if (!preg_match("/^([ \x{00c0}-\x{01ff}a-zA-Z'\-&])+$/u", $director)) {
+            die("Error: invalid director name: " . $director);
+        }
+
+        if (!preg_match("/^[12][0-9]{3}$/", $year)) {
+            die("Error: invalid year: " . $year);
+        }
+
+        $stmt->execute();
+
+        $stmt->close();
+        $connection_moviedb->close();
+
+        header("Location: ./");
+    } else {
+        printf("Errormessage: %s\n", $connection_moviedb->error);
+    }
+}
+?>
 <!doctype html>
 <html>
 <head>
@@ -7,7 +41,7 @@
     <link href="http://fonts.googleapis.com/css?family=Roboto:100" rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="styles/jquery.mobile-1.4.5.min.css">
-    <link rel="stylesheet" href="styles/default.css">
+    <link rel="stylesheet" href="styles/default.scss">
     <link rel="stylesheet" href="styles/form.css">
     <link rel="stylesheet" href="styles/global.css">
     <script src="js/jquery-2.1.4.min.js"></script>
@@ -18,10 +52,10 @@
     <div data-role="content">
         <div class="form input-form">
             <h1>New Movie</h1>
-            <form method="post" action="add_movie.php" data-ajax="false">
+            <form method="post" action="new_entry.php" data-ajax="false">
                 <div class="input-section input-section-text">
                     <label for="director">DIRECTOR</label>
-                    <input type="text" id="director" name="director" placeholder="" required pattern="^([ \u00c0-\u01ffa-zA-Z'-&])+$">
+                    <input type="text" id="director" name="director" placeholder="" required pattern="^([ \u00c0-\u01ffa-zA-Z'\-&])+$">
                 </div>
                 <div class="input-section input-section-text">
                     <label for="year">YEAR</label>
@@ -32,7 +66,7 @@
                     <input type="text" id="title" name="title" placeholder="" required>
                 </div>
                 <div class="input-section">
-                    <input type="checkbox" id="pick" name="pick" data.mini="true">
+                    <input type="checkbox" id="pick" name="pick">
                     <label for="pick">Picked</label>
                 </div>
                 <div style="overflow:hidden">

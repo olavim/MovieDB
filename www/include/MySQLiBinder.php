@@ -63,6 +63,7 @@ class MySQLiBinder
     protected function get_results($stmt)
     {
         $result = $stmt->get_result();
+        $result_array = array();
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $result_array[] = $row;
         }

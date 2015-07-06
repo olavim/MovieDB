@@ -1,101 +1,88 @@
 div[data-role="page"] {
-    background-image: url('images/gray-lines.png') !important;
-    background-color: #755d39;
-}
+  background-image: url("images/gray-lines.png") !important;
+  background-color: #755d39; }
 
-div.form {
-    font-family: 'Open Sans', Tahoma, Arial, Helvetica, sans-serif;
-    background-color: #eee;
-    padding: 2em;
-    border: 1px solid #666;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, .4);
-    -moz-box-shadow: 0 0 20px 0 rgba(0, 0, 0, .4);
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .4);
-    margin-top: 1em;
-}
+.form {
+  -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.4);
+  font-family: 'Open Sans', Tahoma, Arial, Helvetica, sans-serif;
+  background-color: #eee;
+  padding: 2em;
+  border: 1px solid #666;
+  border-radius: 5px;
+  margin-top: 1em; }
 
-div.form h1 {
-    font-family: 'Roboto', Tahoma, Arial, Helvetica, sans-serif;
-    text-align: center;
-    font-size: 3em;
-    font-weight: 100;
-    color: #888;
-    margin-top: .5em;
-    margin-bottom: 1em;
-}
+.form h1 {
+  font-family: 'Roboto', 'Open Sans', Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 100;
+  text-align: center;
+  font-size: 3em;
+  color: #888;
+  margin-top: .5em;
+  margin-bottom: 1em; }
 
-div.form .ui-button {
-    width: 100%;
-    height: 50px;
-    background-color: #09f;
-    border-color: #06c;
-    padding: .5em;
-    font-weight: bold;
-}
+.form .ui-button {
+  width: 100%;
+  height: 50px;
+  background-color: #09f;
+  border-color: #06c;
+  padding: .5em;
+  font-weight: bold; }
 
-div.form .ui-button:hover {
-    background-color: #1af;
-    border-color: #06c;
-}
+.form .ui-button:hover {
+  background-color: #1af;
+  border-color: #07d; }
 
-div.form .ui-button:focus {
-    -webkit-box-shadow: 0 0 8px 4px rgba(0, 200, 255, .4);
-    -moz-box-shadow: 0 0 8px 4px rgba(0, 200, 255, .4);
-    box-shadow: 0 0 8px 4px rgba(0, 200, 255, .4);
-}
-
-div.form input[type="text"], div.form input[type="password"] {
-    font-size: 1em;
-    border: 1px solid #ccc;
-    padding: .6em;
-}
+.form .ui-button:focus {
+  -webkit-box-shadow: 0 0 8px 4px rgba(0, 200, 255, 0.4);
+  -moz-box-shadow: 0 0 8px 4px rgba(0, 200, 255, 0.4);
+  box-shadow: 0 0 8px 4px rgba(0, 200, 255, 0.4); }
 
 .ui-input-text {
-    border: none;
-}
+  border: none; }
 
 /* remove chrome's autofill color */
 input:-webkit-autofill, input:-webkit-autofill:focus {
-    -webkit-box-shadow: inset 0 0 0 1000px white;
-}
+  -webkit-box-shadow: inset 0 0 0 1000px white; }
 
 .input-page {
-    min-height: 100px !important;
-}
+  min-height: 100px !important; }
 
-.input-form .input-section-text label {
-    font-size: 9pt;
-    font-weight: bold;
-    padding: 4px;
-    margin: 0;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
-}
+.input-section-text label {
+  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  font-size: 9pt;
+  font-weight: bold;
+  padding: 4px;
+  margin: 0; }
 
-.input-form .input-section {
-    margin-bottom: 1.5em;
-}
+.input-section {
+  margin-bottom: 1.5em; }
 
-.input-form .input-section-text {
-    background-color: #444;
-    text-shadow: none;
-    color: #fff;
-}
+.input-section-text {
+  background-color: #444;
+  text-shadow: none;
+  color: #fff; }
 
-.input-form .input-section input[type="text"], .input-form .input-section .ui-input-text {
-    margin: 0;
-    border-radius: 0;
-}
+.ui-input-text, input[type="text"] {
+  margin: 0;
+  border-radius: 0; }
 
-.input-form .input-section input {
-    border-radius: 0;
-}
+input[type="text"], .input[type="password"] {
+  font-size: 1em;
+  border: 1px solid #ccc;
+  padding: .6em; }
+
+input {
+  border-radius: 0; }
 
 @media screen and (min-device-width: 800px) {
-    div.input-form {
-        padding: 2em;
-        width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
+  .input-form {
+    padding: 2em;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto; } }
+
+/*# sourceMappingURL=form.css.map */

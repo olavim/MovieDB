@@ -5,6 +5,7 @@
         var settings = $.extend({
             elementsPerPage: 20,
             headings: "director,year,title",
+            id: "id",
             orderBy: "title",
             asc: true,
             widthSet: ["","",""],
@@ -41,7 +42,7 @@
             var currRow = settings.elementsPerPage * (i - 1);
             var rowCap = Math.min(currRow + settings.elementsPerPage, numRows);
             for (var row = currRow; row < rowCap; row++) {
-                tbody += '<tr';
+                tbody += '<tr data-id="' + data[row][settings.id] + '"';
                 if (data[row].pick) {
                     tbody += ' class="picked"';
                 }
@@ -57,7 +58,7 @@
             }
 
             pages +=
-                '<div data-role="page" title="Page '+i+'" id="page-'+i+'" data-prev="'+prevPage+'" data-next="'+nextPage+'">' +
+                '<div data-role="page" data-name="Page '+i+'" id="page-'+i+'" data-prev="'+prevPage+'" data-next="'+nextPage+'">' +
                     '<div role="main" class="ui-content">' +
                         '<table data-role="table" class="table-stripe ui-responsive ui-shadow ui-body-d">' +
                             '<thead>' +

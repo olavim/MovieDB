@@ -1,9 +1,9 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/psl-config.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/Handle.php';
+include_once '../include/psl-config.php';
+include_once '../include/Handle.php';
 use GitHubWebhook\Handler;
-// webhook test
-$handler = new Handler(SECRET, __DIR__);
+
+$handler = new Handler(SECRET, '../');
 if ($handler->handle()) {
     echo "Repository pulled.";
 } else {
