@@ -75,6 +75,18 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="styles/global.css">
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(function() {
+            $(document).keypress(function (e) {
+                if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                    document.forms[0].submit();
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div data-role="page" id="search-page">

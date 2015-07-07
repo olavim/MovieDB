@@ -13,10 +13,6 @@ if (isset($_POST['director'], $_POST['year'], $_POST['title'])) {
         $title = $_POST['title'];
         $pick = isset($_POST['pick']) ? "x" : "";
 
-        if (!preg_match("/^([ \x{00c0}-\x{01ff}a-zA-Z'\-&])+$/u", $director)) {
-            die("Error: invalid director name: " . $director);
-        }
-
         if (!preg_match("/^[12][0-9]{3}$/", $year)) {
             die("Error: invalid year: " . $year);
         }
@@ -46,6 +42,18 @@ if (isset($_POST['director'], $_POST['year'], $_POST['title'])) {
     <link rel="stylesheet" href="styles/global.css">
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(function() {
+            $(document).keypress(function (e) {
+                if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                    document.forms[0].submit();
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div data-role="page" id="search-page">
@@ -55,7 +63,7 @@ if (isset($_POST['director'], $_POST['year'], $_POST['title'])) {
             <form method="post" action="new_entry.php" data-ajax="false">
                 <div class="input-section input-section-text">
                     <label for="director">DIRECTOR</label>
-                    <input type="text" id="director" name="director" placeholder="" required pattern="^([ \u00c0-\u01ffa-zA-Z'\-&])+$">
+                    <input type="text" id="director" name="director" placeholder="" required>
                 </div>
                 <div class="input-section input-section-text">
                     <label for="year">YEAR</label>

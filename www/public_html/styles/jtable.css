@@ -9,7 +9,13 @@ td, th {
   text-shadow: none; }
 
 td {
-  vertical-align: middle !important; }
+  vertical-align: middle !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 th {
   color: #666; }
@@ -48,6 +54,31 @@ tr.picked td:first-of-type:after {
 
 .ui-table-cell-label, .ui-table-cell-title {
   font-weight: normal; }
+
+.select-view-contain {
+  -webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 10px 16px;
+  display: inline-block;
+  overflow: hidden;
+  width: auto;
+  border: 1px solid #ccc; }
+  .select-view-contain .ui-field-contain {
+    margin: 0;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0; }
+    .select-view-contain .ui-field-contain label, .select-view-contain .ui-field-contain .ui-select {
+      display: inline-block;
+      vertical-align: middle;
+      float: none;
+      width: auto; }
+    .select-view-contain .ui-field-contain label {
+      margin: 0;
+      margin-right: 1em; }
 
 @media (min-width: 36em) {
   tbody tr:not(.selected):hover {

@@ -18,6 +18,7 @@ html, body, #pdf-page { /* specify page */
 }
 
 body {
+    font-family: "Open Sans", sans-serif;
 	background-image: url('images/rough-diagonal.png') !important;
 	background-color: #fff;
 }
@@ -27,7 +28,6 @@ body > div[data-role="header"], body > div[data-role="footer"] {
 	border-bottom: 1px solid #d3d3d3;
 
 	.ui-title {
-		font-family: "Open Sans", sans-serif;
 		padding: 0;
 		margin: 1em;
 		font-size: 16px;

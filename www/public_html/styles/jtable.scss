@@ -18,6 +18,12 @@ td, th {
 
 td {
     vertical-align: middle !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 th {
@@ -62,6 +68,36 @@ tr.picked {
 
 .ui-table-cell-label, .ui-table-cell-title {
     font-weight: normal;
+}
+
+.select-view-contain {
+    @include box-shadow(0 0 6px 0 rgba(0, 0, 0, .1));
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px 16px;
+    display: inline-block;
+    overflow: hidden;
+    width: auto;
+    border: 1px solid #ccc;
+
+    .ui-field-contain {
+        margin: 0;
+        display: inline-block;
+        white-space: nowrap;
+        padding: 0;
+
+        label, .ui-select {
+            display: inline-block;
+            vertical-align: middle;
+            float: none;
+            width: auto;
+        }
+
+        label {
+            margin: 0;
+            margin-right: 1em;
+        }
+    }
 }
 
 @media (min-width: 36em) {

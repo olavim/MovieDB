@@ -52,7 +52,10 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		$(document).one('pageinit', function() {
 			if (!isMobile()) {
 				$("#nav-button").attr("href", "#nav-panel");
-			}
+                $("body").data("elements-per-page", 50);
+			} else {
+                $("body").data("elements-per-page", 20);
+            }
 
             $.ajax({
                 url: "json_table.php",
@@ -80,24 +83,47 @@ $s_pick 	= get('s_pick') ? "x" : "";
 
         $(document).on("click", "#pick-btn", function() {
             $(".selected").toggleClass("picked");
-            $.ajax({
-                url: "set_picked.php",
-                type: "get",
-                data: {
-                    id: $(".selected").jqmData("id"),
-                    state: $(".selected").is(".picked") ? "on" : "off"
-                }
+            $(".selected").each(function() {
+                $.ajax({
+                    url: "set_picked.php",
+                    type: "get",
+                    data: {
+                        id: $(this).jqmData("id"),
+                        state: $(this).is(".picked") ? "on" : "off"
+                    }
+                });
             });
         });
 
         $(document).on("click", "#delete-btn", function() {
-            var id = $(".selected").jqmData("id");
-            location.href="delete_entry.php?id=" + id;
+            var id = "";
+            var numSelected = $(".selected").length;
+
+            $(".selected").each(function(index) {
+                id += $(this).jqmData("id");
+                if (index < numSelected - 1) {
+                    id += ",";
+                }
+            });
+
+            location.href = 'delete_entry.php?id='+id;
         });
 
         $(document).on("click", "#edit-btn", function() {
             var id = $(".selected").jqmData("id");
             location.href="edit_entry.php?id=" + id;
+        });
+
+        $(document).on('change', ':jqmData(role="viewselect")', function () {
+            $("body").data("elements-per-page", $(this).val());
+            $("body").jtable("refresh", {
+                elementsPerPage: $("body").data("elements-per-page")
+            });
+            $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "fade"});
+        });
+
+        $(document).on('pagebeforeshow', '.ui-page', function() {
+            $(this).find(':jqmData(role="viewselect")').selectmenu("refresh");
         });
 
         function initTable(data) {
@@ -109,11 +135,12 @@ $s_pick 	= get('s_pick') ? "x" : "";
 
             $('body').jtable(jsonData, {
                 orderBy: "<?=$order_by?>",
-                asc: <?=$order_direction == "asc" ? "true" : "false"?>
+                asc: <?=$order_direction == "asc" ? "true" : "false"?>,
+                elementsPerPage: $("body").data("elements-per-page")
             });
 
             var view = $('<ul data-role="listview"></ul>');
-            for (var i = 1; i <= Math.ceil(jsonData.length / 20); i++) {
+            for (var i = 1; i <= Math.ceil(jsonData.length / $("body").data("elements-per-page")); i++) {
                 view.append($('<li><a href="#page-' + i + '" data-transition="slide">Page ' + i + '</a></li>'));
             }
 

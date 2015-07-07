@@ -54,7 +54,7 @@ for ($i = 0; $i < count($select_arr); $i++) {
 
     $params .= 's';
 }
-$query .= ' ORDER BY ' . $order_by . ' ' . $order_dir;
+$query .= ' ORDER BY lower(' . $order_by . ') ' . $order_dir;
 
 $binder = new MySQLiBinder($query, $params, $search_arr);
 if ($result = $binder->execute($connection_moviedb)) {
