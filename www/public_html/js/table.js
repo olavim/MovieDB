@@ -1,5 +1,6 @@
 var shifted = false;
 var selectStart;
+
 $(document).on('keyup keydown', function(e) {
     shifted = e.shiftKey;
 });

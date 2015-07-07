@@ -1,12 +1,9 @@
 <?php
-include_once '../include/db_connect.php';
-include_once '../include/functions.php';
+require_once 'login.php';
 include_once "sql.php";
 require_once '../lib/snappy/autoload.php';
 
 use Knp\Snappy\Pdf;
-
-sec_session_start();
 
 function get($s) {
 	return isset($_GET[$s]) ? $_GET[$s] : "";

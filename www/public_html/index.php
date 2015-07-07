@@ -1,5 +1,5 @@
 ﻿<?php
-require_once '../check_login.php';
+require_once 'login.php';
 
 function get($s) {
 	return isset($_GET[$s]) ? $_GET[$s] : "";
@@ -45,8 +45,23 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		$(function () {
 			$("[data-role='header'], [data-role='footer']").toolbar({theme: "a"});
             $("div:jqmData(role='footer')").hide();
-			$("#menu-popup").enhanceWithin().popup();
+			$("[data-role='popup']").enhanceWithin().popup();
 			$("body>[data-role='panel']").panel();
+
+            $(window).bind('resize', function (event) {
+                var content_height = $.mobile.activePage.children('[data-role="content"]').height(),
+                    header_height  = $.mobile.activePage.children('[data-role="header"]').height(),
+                    footer_height  = $.mobile.activePage.children('[data-role="footer"]').height(),
+                    window_height  = $(this).height();
+
+                if (content_height < (window_height - header_height - footer_height)) {
+                    $.mobile.activePage.css('min-height', (content_height + header_height + footer_height));
+                    setTimeout(function () {
+                        $.mobile.activePage.children('[data-role="footer"]').css('top', 0);
+                    }, 500);
+                }
+                event.stopImmediatePropagation();
+            }).trigger('resize');
 		});
 
 		$(document).one('pageinit', function() {
@@ -95,7 +110,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
             });
         });
 
-        $(document).on("click", "#delete-btn", function() {
+        $(document).on("click", "#delete-btn-confirm", function() {
             var id = "";
             var numSelected = $(".selected").length;
 
@@ -106,12 +121,12 @@ $s_pick 	= get('s_pick') ? "x" : "";
                 }
             });
 
-            location.href = 'delete_entry.php?id='+id;
+            window.location.href = 'delete_entry.php?id='+id;
         });
 
         $(document).on("click", "#edit-btn", function() {
             var id = $(".selected").jqmData("id");
-            location.href="edit_entry.php?id=" + id;
+            window.location.href="edit_entry.php?id=" + id;
         });
 
         $(document).on('change', ':jqmData(role="viewselect")', function () {
@@ -119,7 +134,9 @@ $s_pick 	= get('s_pick') ? "x" : "";
             $("body").jtable("refresh", {
                 elementsPerPage: $("body").data("elements-per-page")
             });
-            $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "fade"});
+            $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "none"});
+            refreshNavigation();
+            $(window).resize();
         });
 
         $(document).on('pagebeforeshow', '.ui-page', function() {
@@ -139,19 +156,23 @@ $s_pick 	= get('s_pick') ? "x" : "";
                 elementsPerPage: $("body").data("elements-per-page")
             });
 
+            refreshNavigation();
+            $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "fade"});
+        }
+
+        function refreshNavigation() {
             var view = $('<ul data-role="listview"></ul>');
             for (var i = 1; i <= Math.ceil(jsonData.length / $("body").data("elements-per-page")); i++) {
                 view.append($('<li><a href="#page-' + i + '" data-transition="slide">Page ' + i + '</a></li>'));
             }
 
             if (!isMobile()) {
-                $("#nav-panel").append(view);
+                $("#nav-panel").html(view);
             } else {
-                $("#nav-page").append(view);
+                $("#nav-page").html(view);
             }
 
             view.listview();
-            $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "fade"});
         }
 
 		function printPage() {
@@ -198,10 +219,21 @@ $s_pick 	= get('s_pick') ? "x" : "";
 </div>
 <div data-role="footer" data-position="fixed" data-tap-toggle="false">
     <a href="#" id="edit-btn" data-role="button" class="no-background ui-btn ui-alt-icon ui-btn-icon-left">Edit</a><!--
- --><a href="#" id="delete-btn" data-role="button" class="no-background ui-btn ui-alt-icon ui-btn-icon-left">Delete</a><!--
+ --><a href="#delete-popup" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" id="delete-btn" class="no-background ui-btn ui-alt-icon ui-btn-icon-left">Delete</a><!--
  --><a href="#" id="pick-btn" data-role="button" class="no-background ui-btn ui-alt-icon ui-btn-icon-left">Pick</a>
 </div>
-<div id="menu-popup" data-theme="b" class="ui-popup ui-body-a ui-overlay-shadow ui-corner-all">
+<div data-role="popup" id="delete-popup" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+    <div data-role="header" data-theme="a">
+        <h1>Confirm Delete</h1>
+        </div>
+    <div role="main" class="ui-content">
+        <h3 class="ui-title">Are you sure you want to delete this row?</h3>
+        <p>This action cannot be undone.</p>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow" id="delete-btn-confirm">Delete</a>
+    </div>
+</div>
+<div data-role="popup" id="menu-popup" data-theme="b" class="ui-popup ui-body-a ui-overlay-shadow ui-corner-all">
 	<ul data-role="listview" class="ui-listview">
 		<li><a href="search.html" rel="external">Search</a></li>
 		<li><a href="#" onclick="printPage()">Print</a></li>

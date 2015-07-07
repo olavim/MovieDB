@@ -77,6 +77,8 @@
     }
 
     function buildTable(settings, data, widthSet) {
+        settings.elementsPerPage = parseInt(settings.elementsPerPage);
+
         var keys = settings.headings.split(",");
         var numRows = data.length;
         var numPages = Math.max(1, Math.ceil(numRows / settings.elementsPerPage));
@@ -105,6 +107,7 @@
             var tbody = '';
             var currRow = settings.elementsPerPage * (i - 1);
             var rowCap = Math.min(currRow + settings.elementsPerPage, numRows);
+
             for (var row = currRow; row < rowCap; row++) {
                 tbody += '<tr data-id="' + data[row][settings.id] + '"';
                 if (data[row].pick) {
@@ -127,7 +130,7 @@
                     '<div role="main" class="ui-content">' +
                         '<div class="select-view-contain">' +
                             '<div class="ui-field-contain">' +
-                                '<label for="select-view-' + i + '">Movies per page:</label>' +
+                                '<label for="select-view-' + i + '">Rows per page:</label>' +
                                 '<select data-theme="a" data-role="viewselect" id="select-view-' + i + '" data-mini="true">' +
                                     '<option value="20">20</option>' +
                                     '<option value="50">50</option>' +

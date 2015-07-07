@@ -1,8 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/db_connect.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../include/functions.php';
-
-sec_session_start();
+require_once 'login.php';
 
 function set_session($s)
 {

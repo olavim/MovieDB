@@ -1,13 +1,13 @@
 <?php
-include_once 'include/LoginProcessor.php';
-include_once 'include/db_connect.php';
-include_once 'include/functions.php';
+include_once '../include/LoginProcessor.php';
+include_once '../include/db_connect.php';
+include_once '../include/functions.php';
 use Login\LoginProcessor;
 
 sec_session_start();
 
-if (isset($_POST['username'], $_POST['password'])) {
-    $processor = new \Login\LoginProcessor($_POST['username'], $_POST['password'], $mysqli);
+if (isset($_POST['username'], $_POST['p'])) {
+    $processor = new LoginProcessor($_POST['username'], $_POST['p'], $mysqli);
     $processor->login();
 }
 
@@ -34,7 +34,7 @@ if (login_check($mysqli) != true) {
     <div data-role="content">
         <div class="form input-form">
             <h1>Log-in</h1>
-            <form method="post" action="" data-ajax="false">
+            <form method="post" action="./" data-ajax="false">
                 <div class="input-section input-section-text">
                     <input type="text" id="username" name="username" placeholder="Username">
                 </div>

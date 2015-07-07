@@ -1,9 +1,6 @@
 <?php
-include_once '../include/db_connect.php';
-include_once '../include/functions.php';
+require_once 'login.php';
 include_once 'sql.php';
-
-sec_session_start();
 
 if (isset($_GET['id'])) {
     $id_arr = explode(',', $_GET['id']);
@@ -26,6 +23,7 @@ if (isset($_GET['id'])) {
         die($connection_moviedb->error);
     }
 
+    $connection_moviedb->close();
     header('Location: ./');
 } else {
     echo "Invalid request";

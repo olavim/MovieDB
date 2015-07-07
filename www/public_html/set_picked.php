@@ -1,9 +1,6 @@
 <?php
-include_once '../include/db_connect.php';
-include_once '../include/functions.php';
+require_once 'login.php';
 include_once 'sql.php';
-
-sec_session_start();
 
 if (isset($_GET['id'], $_GET['state'])) {
     $id = $_GET['id'];

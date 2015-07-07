@@ -1,9 +1,6 @@
 <?php
-include_once '../include/db_connect.php';
-include_once '../include/functions.php';
+require_once 'login.php';
 include_once 'sql.php';
-
-sec_session_start();
 
 if (isset($_POST['director'], $_POST['year'], $_POST['title'])) {
     if ($stmt = $connection_moviedb->prepare("INSERT INTO movie (director, year, title, pick) VALUES (?, ?, ?, ?)")) {

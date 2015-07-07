@@ -1,10 +1,7 @@
 <?php
-include_once '../include/db_connect.php';
-include_once '../include/functions.php';
-include_once '../include/MySQLiBinder.php';
+require_once 'login.php';
 include_once 'sql.php';
-
-sec_session_start();
+include_once '../include/MySQLiBinder.php';
 
 use MySQLiBinder\MySQLiBinder;
 
