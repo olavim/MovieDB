@@ -1,8 +1,10 @@
 var shifted = false;
+var ctrled = false;
 var selectStart;
 
 $(document).on('keyup keydown', function(e) {
     shifted = e.shiftKey;
+    ctrled = e.ctrlKey;
 });
 
 $(document).bind("pagecreate", function () {
@@ -42,7 +44,9 @@ $(document).one("pagebeforeshow", "#page-1", function () {
 });
 
 $(document).on("click", "tbody tr", function() {
-    $(".selected").not(this).removeClass("selected");
+    if (!ctrled) {
+        $(".selected").not(this).removeClass("selected");
+    }
 
     if (!shifted) {
         selectStart = $(this).index();

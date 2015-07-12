@@ -73,7 +73,7 @@ if ($stmt = $connection_moviedb->prepare($query)) {
 	header('Content-Type: application/pdf');
 
 	$filename = "../tmp/pdf_" . rand(100000, 999999) . '.pdf';
-	$snappy = new Pdf('D:/www/data/MovieDB/www/lib/wkhtmltopdf.exe');
+	$snappy = new Pdf(realpath('../lib/wkhtmltopdf'));
 	$snappy->generateFromHtml($html, $filename);
 	echo file_get_contents($filename);
 

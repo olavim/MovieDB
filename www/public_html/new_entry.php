@@ -39,6 +39,7 @@ if (isset($_POST['director'], $_POST['year'], $_POST['title'])) {
     <link rel="stylesheet" href="styles/global.css">
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/jquery.nicefileinput.min.js"></script>
     <script>
         $(function() {
             $(document).keypress(function (e) {

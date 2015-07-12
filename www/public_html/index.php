@@ -1,5 +1,6 @@
 ﻿<?php
 require_once 'login.php';
+include_once '../config/conf.php';
 
 function get($s) {
 	return isset($_GET[$s]) ? $_GET[$s] : "";
@@ -13,7 +14,7 @@ if (isset($_GET['logout'])) {
 	include_once '../include/logout.php';
 }
 
-$order_by 		 = session('order', "director");
+$order_by 		 = session('order', $db_headings_visible[0]);
 $order_direction = session('dir', "asc");
 
 $s_director = get('s_director');
@@ -67,9 +68,9 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		$(document).one('pageinit', function() {
 			if (!isMobile()) {
 				$("#nav-button").attr("href", "#nav-panel");
-                $("body").data("elements-per-page", 50);
+                $("body").data("elements-per-page", <?=isset($_SESSION['elementsPerPage']) ? $_SESSION['elementsPerPage'] : 50?>);
 			} else {
-                $("body").data("elements-per-page", 20);
+                $("body").data("elements-per-page", <?=isset($_SESSION['elementsPerPage']) ? $_SESSION['elementsPerPage'] : 20?>);
             }
 
             $.ajax({
@@ -137,6 +138,14 @@ $s_pick 	= get('s_pick') ? "x" : "";
             $(":mobile-pagecontainer").pagecontainer("change", "#page-1", {transition: "none"});
             refreshNavigation();
             $(window).resize();
+
+            $.ajax({
+                url: "session.php",
+                type: "get",
+                data: {
+                    elementsPerPage: $("body").data("elements-per-page")
+                }
+            });
         });
 
         $(document).on('pagebeforeshow', '.ui-page', function() {
@@ -238,7 +247,8 @@ $s_pick 	= get('s_pick') ? "x" : "";
 		<li><a href="search.html" rel="external">Search</a></li>
 		<li><a href="#" onclick="printPage()">Print</a></li>
 		<li data-role="list-divider"></li>
-		<li><a href="new_entry.php" rel="external">Add Movie</a></li>
+        <li><a href="new_entry.php" rel="external">Add Movie</a></li>
+        <li><a href="import.php" rel="external">Import</a></li>
 		<li data-role="list-divider"></li>
 		<li><a href="?logout=1" rel="external">Log out</a></li>
 	</ul>

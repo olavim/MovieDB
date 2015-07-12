@@ -53,7 +53,9 @@ for ($i = 0; $i < count($select_arr); $i++) {
 }
 $query .= ' ORDER BY lower(' . $order_by . ') ' . $order_dir;
 
-$binder = new MySQLiBinder($query, $params, $search_arr);
-if ($result = $binder->execute($connection_moviedb)) {
+$binder = new MySQLiBinder($connection_moviedb, $query, $params);
+if ($result = $binder->execute($search_arr)) {
     echo json_encode($result);
 }
+$binder->close();
+$connection_moviedb->close();

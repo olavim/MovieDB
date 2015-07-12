@@ -35,10 +35,6 @@ if (isset($_GET['id'])) {
         $title = $_POST['title'];
         $pick = isset($_POST['pick']) ? "x" : "";
 
-        if (!preg_match("/^([ \x{00c0}-\x{01ff}a-zA-Z'\-&])+$/u", $director)) {
-            die("Error: invalid director name: " . $director);
-        }
-
         if (!preg_match("/^[12][0-9]{3}$/", $year)) {
             die("Error: invalid year: " . $year);
         }
@@ -94,7 +90,7 @@ if (isset($_GET['id'])) {
                 <input type="hidden" name="id" value="<?=$id?>">
                 <div class="input-section input-section-text">
                     <label for="director">DIRECTOR</label>
-                    <input type="text" id="director" name="director" value="<?=$director?>" required pattern="^([ \u00c0-\u01ffa-zA-Z'\-&])+$">
+                    <input type="text" id="director" name="director" value="<?=$director?>" required>
                 </div>
                 <div class="input-section input-section-text">
                     <label for="year">YEAR</label>
