@@ -17,10 +17,15 @@ if (isset($_GET['logout'])) {
 $order_by 		 = session('order', $db_headings_visible[0]);
 $order_direction = session('dir', "asc");
 
-$s_director = get('s_director');
-$s_year     = get('s_year');
-$s_title    = get('s_title');
-$s_pick 	= get('s_pick') ? "x" : "";
+$search_params = array();
+foreach ($db_headings_searchable as $heading) {
+    $search_params[$heading] = get('s_'.$heading);
+}
+
+$search = array();
+foreach ($db_headings_searchable as $heading) {
+    $search[] = $heading . '=' . get('s_'.$heading);
+}
 ?>
 <!doctype html>
 <html>
@@ -79,10 +84,10 @@ $s_pick 	= get('s_pick') ? "x" : "";
                 contentType: 'application/json',
                 dataType: 'html',
                 data: {
-                    select: "id,director,year,title,pick",
+                    select: "<?=join(',', $db_headings)?>",
                     order: "<?=$order_by?>",
                     dir: "<?=$order_direction?>",
-                    search: ",<?=$s_director.','.$s_year.','.$s_title.','.$s_pick?>"
+                    search: "<?=join(';', $search)?>"
                 },
                 beforeSend: function () {
                     showLoader();
@@ -126,8 +131,11 @@ $s_pick 	= get('s_pick') ? "x" : "";
         });
 
         $(document).on("click", "#edit-btn", function() {
-            var id = $(".selected").jqmData("id");
-            window.location.href="edit_entry.php?id=" + id;
+            var ids = [];
+            $(".selected").each(function() {
+                ids.push($(this).jqmData("id"));
+            });
+            window.location.href="edit_entry.php?ids=" + ids.join();
         });
 
         $(document).on('change', ':jqmData(role="viewselect")', function () {
@@ -160,6 +168,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
             jsonData = jQuery.parseJSON(data);
 
             $('body').jtable(jsonData, {
+                headings: "<?=join(',', $db_headings_visible)?>",
                 orderBy: "<?=$order_by?>",
                 asc: <?=$order_direction == "asc" ? "true" : "false"?>,
                 elementsPerPage: $("body").data("elements-per-page")
@@ -185,7 +194,7 @@ $s_pick 	= get('s_pick') ? "x" : "";
         }
 
 		function printPage() {
-			$("#pdf-page").find(".ui-content").html('<iframe id="pdf-object" src="create_pdf.php?<?="director=$s_director&year=$s_year&title=$s_title&pick=$s_pick"?>" style="height:inherit;width:100%;border:none;margin:0;padding:0"></iframe>');
+			$("#pdf-page").find(".ui-content").html('<iframe id="pdf-object" src="create_pdf.php?<?=join('&', $search)?>" style="height:inherit;width:100%;border:none;margin:0;padding:0"></iframe>');
 			navnext($("#pdf-page"));
 			$.mobile.loading("show");
 			$("#pdf-object").load(function() {

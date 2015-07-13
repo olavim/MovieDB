@@ -70,12 +70,6 @@ $(document).on("click", "tbody tr", function() {
         });
     }
 
-    if ($(".selected").length == 1) {
-        $("#edit-btn").show();
-    } else {
-        $("#edit-btn").hide();
-    }
-
     var footer = $("div:jqmData(role='footer')");
     if (($(this).hasClass("selected") && !footer.is(":visible")) ||
         (!$(this).hasClass("selected") && footer.is(":visible"))) {

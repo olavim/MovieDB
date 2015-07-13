@@ -13,6 +13,9 @@ div[data-role="page"] {
   border-radius: 5px;
   margin-top: 1em; }
 
+.form:last-child {
+  margin-bottom: 1em; }
+
 .form h1 {
   font-family: 'Roboto', 'Open Sans', Tahoma, Arial, Helvetica, sans-serif;
   font-weight: 100;
@@ -21,6 +24,10 @@ div[data-role="page"] {
   color: #888;
   margin-top: .5em;
   margin-bottom: 1em; }
+
+.form h1:last-child {
+  margin-top: 0;
+  margin-bottom: 0; }
 
 .form .ui-button {
   width: 100%;
@@ -61,6 +68,9 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
 .input-section {
   margin-bottom: 1.5em; }
 
+.input-section:last-child {
+  margin-bottom: 0; }
+
 .input-section-text {
   background-color: #444;
   text-shadow: none;
@@ -98,6 +108,19 @@ input {
   line-height: 2.5em;
   border: none !important;
   width: calc(100% - 110px); }
+
+label.ui-checkbox-off, label.ui-checkbox-on {
+  border-color: #d5d5d5 !important;
+  background-color: #fbfbfb !important;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); }
+
+label.ui-checkbox-off:hover, label.ui-checkbox-on:hover {
+  background-color: #f6f6f6 !important; }
+
+label.ui-checkbox-off:active, label.ui-checkbox-on:active {
+  background-color: #f0f0f0 !important; }
 
 @media screen and (min-device-width: 800px) {
   .input-form {
