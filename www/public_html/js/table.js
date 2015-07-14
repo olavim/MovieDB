@@ -70,12 +70,59 @@ $(document).on("click", "tbody tr", function() {
         });
     }
 
-    var footer = $("div:jqmData(role='footer')");
-    if (($(this).hasClass("selected") && !footer.is(":visible")) ||
-        (!$(this).hasClass("selected") && footer.is(":visible"))) {
-        footer.slideToggle("fast");
+    if (!$(this).hasClass('edit-on') && !$(this).parents('.edit-on').length) {
+        if ($(".selected").length == 1) {
+            $("#edit-btn").show();
+        } else if ($(".selected").length > 1) {
+            $("#edit-btn").hide();
+        }
+
+        var footer = $("#modify-footer");
+        if ($(".selected").length >= 1) {
+            if (!footer.is(':visible')) {
+                footer.slideToggle("fast");
+            }
+        } else {
+            if (footer.is(':visible')) {
+                footer.slideToggle("fast", function() {
+                    $("#edit-btn").hide();
+                });
+            }
+        }
     }
 });
+
+function toggleEditEntry(elem) {
+    if (!elem.hasClass('edit-on')) {
+        elem.addClass("edit-on");
+        var height = $(elem).find('td').eq(0).outerHeight();
+        elem.find('td').each(function () {
+            var width = $(this).width();
+            var b = $(this).find('.ui-table-cell-title');
+            var value = b.text();
+            var input = $('<input type="text" value="' + value + '" class="ui-table-cell-editfield">');
+            b.hide();
+            $(this).append(input);
+            input.height(height - 6);
+            $(this).width(width);
+        });
+        var input = $(elem).find('.ui-table-cell-editfield').eq(0);
+        input.focus().val(input.val());
+
+        $("#modify-footer").slideToggle("fast");
+    } else {
+        var height = $(elem).find('td').eq(0).height();
+        elem.removeClass("edit-on");
+        elem.find('td').each(function () {
+            var width = $(this).width();
+            $(this).find('.ui-table-cell-editfield').remove();
+            $(this).find('.ui-table-cell-title').show();
+            $(this).width(width);
+        });
+    }
+
+    $("#edit-footer").slideToggle("fast");
+}
 
 function orderTable(id) {
     var orderBy = $("#order-by");

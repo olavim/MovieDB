@@ -15,7 +15,10 @@ td {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 th {
   color: #666; }
@@ -55,6 +58,20 @@ tr.picked td:first-of-type:after {
 .ui-table-cell-label, .ui-table-cell-title {
   font-weight: normal; }
 
+.ui-table-cell-editfield {
+  -webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+  width: calc(100% - 10px);
+  height: 100%;
+  padding: 0 0 0 .8em;
+  border: 1px solid #ddd;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: .9em;
+  border-radius: 4px; }
+
 .select-view-contain {
   -webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
@@ -81,13 +98,21 @@ tr.picked td:first-of-type:after {
       margin-right: 1em; }
 
 @media (min-width: 36em) {
-  tbody tr:not(.selected):hover {
+  tr.edit-on td {
+    padding: 4px 0 !important;
+    text-align: center; }
+
+  tbody tr:not(.selected):not(.edit-on):hover {
     background-color: rgba(36, 165, 255, 0.2); }
 
-  tbody .selected {
+  tbody tr.selected:not(.edit-on) {
     background-color: #24a5ff;
     color: #fff; } }
 @media (max-width: 35em) {
+  .ui-table-cell-editfield {
+    display: table-cell;
+    margin: 2px 0; }
+
   .ui-table-reflow td {
     display: table;
     width: 100%;
@@ -138,4 +163,4 @@ tr.picked td:first-of-type:after {
     background-color: #C52837 !important;
     border-color: #555; } }
 
-/*# sourceMappingURL=jtable.css.map */
+/*# sourceMappingURL=jquery.jtable.css.map */

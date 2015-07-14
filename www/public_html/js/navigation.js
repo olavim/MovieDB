@@ -8,11 +8,11 @@ $(document).on('change', '#nav-select', function () {
     location.hash = $(this).find('option:selected').val();
 });
 
-$(document).on("swipeleft", ".ui-page", function() {
+$(document).on("swipeleft", ".ui-page :not(input)", function() {
     navnext($(this).jqmData("next"));
 });
 
-$(document).on("swiperight", ".ui-page", function() {
+$(document).on("swiperight", ".ui-page :not(input)", function() {
     navprev($(this).jqmData("prev"));
 });
 

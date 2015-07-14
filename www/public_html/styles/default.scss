@@ -130,6 +130,10 @@ a[data-role="button"].no-background.ui-btn-icon-notext {
 	background-size: 18px 18px;
 }
 
+#edit-footer {
+  display: none;
+}
+
 @media screen and (max-device-width: 35em) {
     .ui-mobile-safe, .ui-mobile-safe.ui-btn {
         width: 1.5em;
