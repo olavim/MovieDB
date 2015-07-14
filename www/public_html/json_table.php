@@ -3,7 +3,7 @@ require_once 'login.php';
 include_once 'sql.php';
 include_once '../include/MySQLiBinder.php';
 
-use MySQLiBinder\MySQLiBinder;
+use MySQLiBinder\Binder;
 
 function get_s($s, $default = "")
 {
@@ -26,7 +26,7 @@ $order_by = get_s('order', $select_arr[0]);
 $order_dir = get_s('dir', 'asc');
 $param_arr = array();
 
-$binder = new MySQLiBinder($connection_moviedb, 'movie', 'select');
+$binder = new Binder($connection_moviedb, 'movie', 'select');
 foreach ($select_arr as $select_param) {
     $binder->add_known_parameter($select_param);
 }
@@ -43,6 +43,3 @@ $binder->prepare();
 if ($result = $binder->execute($param_arr)) {
     echo json_encode($result);
 }
-
-$binder->close();
-$connection_moviedb->close();

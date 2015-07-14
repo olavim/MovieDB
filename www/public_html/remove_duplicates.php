@@ -25,4 +25,3 @@ while ($row = $result->fetch_assoc()) {
 }
 $delete_query = rtrim($delete_query, ',') . ')';
 $connection_moviedb->query($delete_query);
-$connection_moviedb->close();

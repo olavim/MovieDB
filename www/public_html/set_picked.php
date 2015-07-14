@@ -17,8 +17,7 @@ if (isset($_GET['id'], $_GET['state'])) {
     $state = $state === "on" ? "x" : "";
 
     $query = "UPDATE movie SET pick='$state' WHERE id=$id";
-    $connection_moviedb->query($query);
-    print_r($connection_moviedb->error);
+    $connection_moviedb->query($query) or trigger_error($connection_moviedb->error);
 } else {
     echo "Invalid request";
 }

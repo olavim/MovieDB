@@ -4,7 +4,7 @@ include_once 'sql.php';
 include_once '../config/conf.php';
 include_once '../include/MySQLiBinder.php';
 
-use MySQLiBinder\MySQLiBinder;
+use MySQLiBinder\Binder;
 
 $error = '';
 $set = false;
@@ -26,7 +26,7 @@ foreach ($edit_required as $heading) {
 }
 
 if ($set && !$error) {
-    $binder = new MySQLiBinder($connection_moviedb, 'movie', 'insert');
+    $binder = new Binder($connection_moviedb, 'movie', 'insert');
     $params = array();
 
     foreach ($post as $key => $param) {
@@ -45,8 +45,7 @@ if ($set && !$error) {
 
     $binder->prepare();
     $binder->execute($params);
-    $binder->close();
-    $connection_moviedb->close();
+    $binder->close(true);
 
     header("Location: ./");
 }

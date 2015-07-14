@@ -1,7 +1,7 @@
 <?php
 namespace MySQLiBinder;
 
-class MySQLiBinder
+class Binder
 {
     protected $query_type;
     protected $table;
@@ -95,9 +95,12 @@ class MySQLiBinder
         }
     }
 
-    public function close()
+    public function close($close_mysqli_conn = false)
     {
         $this->stmt->close();
+        if ($close_mysqli_conn) {
+            $this->mysqli->close();
+        }
     }
 
     protected function make_query()

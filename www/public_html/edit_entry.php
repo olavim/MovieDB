@@ -4,7 +4,7 @@ include_once 'sql.php';
 include_once '../config/conf.php';
 include_once '../include/MySQLiBinder.php';
 
-use MySQLiBinder\MySQLiBinder;
+use MySQLiBinder\Binder;
 
 $error = '';
 $set = false;
@@ -30,7 +30,7 @@ if (isset($_POST['form'])) {
 }
 
 if ($set && !$error) {
-    $binder = new MySQLiBinder($connection_moviedb, 'movie', 'update');
+    $binder = new Binder($connection_moviedb, 'movie', 'update');
 
     foreach ($db_headings_alterable as $heading) {
         $binder->add_update_parameter($heading);

@@ -4,7 +4,7 @@ require_once 'login.php';
 include_once 'sql.php';
 include_once '../include/MySQLiBinder.php';
 
-use MySQLiBinder\MySQLiBinder;
+use MySQLiBinder\Binder;
 
 if (isset($_POST['file'])) {
     $fh = fopen($_FILES['file']['tmp_name'], 'r+');
@@ -36,18 +36,14 @@ if (isset($_POST['file'])) {
     }
     $query .= ")";
 
-    if ($binder = new MySQLiBinder($connection_moviedb, $query, $types)) {
-        for ($i = 1; $i < count($lines); $i++) {
-            $params = array();
-            foreach ($heading_keys as $key) {
-                $params[] = $lines[$i][$key];
-            }
-            $binder->execute($params);
+    $binder = new Binder($connection_moviedb, $query, $types) {
+    for ($i = 1; $i < count($lines); $i++) {
+        $params = array();
+        foreach ($heading_keys as $key) {
+            $params[] = $lines[$i][$key];
         }
-        $binder->close();
+        $binder->execute($params);
     }
-    $connection_moviedb->close();
-
     header('Location: ./');
 } else {
 ?>
