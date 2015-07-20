@@ -8,13 +8,23 @@ $(document).on('change', '#nav-select', function () {
     location.hash = $(this).find('option:selected').val();
 });
 
-$(document).on("swipeleft", ".ui-page :not(input)", function() {
-    navnext($(this).jqmData("next"));
-});
+$(document).on('pageinit', '.ui-page', function() {
+    $(this).on("swipeleft", function(event) {
+        if (!$(event.target).is('input')) {
+            var next = $(':mobile-pagecontainer').pagecontainer('getActivePage').jqmData("next");
+            navnext(next);
+        }
+        event.stopImmediatePropagation();
+    });
 
-$(document).on("swiperight", ".ui-page :not(input)", function() {
-    navprev($(this).jqmData("prev"));
-});
+    $(this).on("swiperight", function(event) {
+        if (!$(event.target).is('input')) {
+            var prev = $(':mobile-pagecontainer').pagecontainer('getActivePage').jqmData("prev");
+            navprev(prev);
+        }
+        event.stopImmediatePropagation();
+    });
+})
 
 if (isMobile()) {
     $(document).on('pageshow', '.ui-page:not(#nav-page)', function () {

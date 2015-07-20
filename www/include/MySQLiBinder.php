@@ -3,6 +3,7 @@ namespace MySQLiBinder;
 
 class Binder
 {
+    public $error;
     protected $query_type;
     protected $table;
     protected $types;
@@ -49,14 +50,18 @@ class Binder
             $this->set_params[] = $param . ' = ?';
             $this->types .= $param_type;
         } else {
-            throw new \Exception("Cannot add set-parameters for query type: " . $this->query_type);
+            $this->error = "Cannot add set-parameters for query type: " . $this->query_type;
+            return false;
         }
+
+        return true;
     }
 
     public function set_result_order($order, $direction = 'asc')
     {
         if (strtolower($direction) !== 'asc' && strtolower($direction) !== 'desc') {
-            throw new \Exception("Invalid order direction: value must be 'asc' or 'desc'");
+            $this->error = "Invalid order direction: value must be 'asc' or 'desc'";
+            return false;
         }
 
         if (strtolower($this->query_type) === 'select') {
@@ -64,16 +69,22 @@ class Binder
             $this->result_order = $order;
             $this->result_order_direction = $direction;
         } else {
-            throw new \Exception("Cannot set result order for query type: " . $this->query_type);
+            $this->error = "Cannot set result order for query type: " . $this->query_type;
+            return false;
         }
+
+        return true;
     }
 
     public function prepare()
     {
         $query = $this->make_query();
         if (!($this->stmt = $this->mysqli->prepare($query))) {
-            throw new \Exception($this->mysqli->error."[$query]");
+            $this->error = $this->mysqli->error."[$query]";
+            return false;
         }
+
+        return true;
     }
 
     public function execute($params = null)
@@ -85,11 +96,14 @@ class Binder
         $this->stmt->execute();
 
         if (strtolower($this->query_type) === 'select') {
-            call_user_func_array(array($this->stmt, 'bind_result'), $this->get_parameters());
+            if ($parameters = $this->get_parameters()) {
+                call_user_func_array(array($this->stmt, 'bind_result'), $this->refValues($parameters));
+                if ($result_array = $this->get_results()) {
+                    return $result_array;
+                }
+            }
 
-            $result_array = $this->get_results();
-
-            return $result_array;
+            return false;
         } else {
             return true;
         }
@@ -153,13 +167,14 @@ class Binder
 
             return $parameters;
         } else if ($this->stmt->error) {
-            throw new \Exception($this->stmt->error);
+            $this->error = $this->stmt->error;
+            return false;
         }
     }
 
     protected function get_results()
     {
-        $result = $this->stmt->get_result() or trigger_error($this->stmt->error);
+        $result = $this->stmt->get_result();
         if ($result && !$this->stmt->error) {
             $result_array = array();
             while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -167,9 +182,21 @@ class Binder
             }
             return $result_array;
         } else if ($this->stmt->error) {
-            throw new \Exception($this->stmt->error);
+            $this->error = $this->stmt->error;
+            return false;
         } else {
             return array();
         }
+    }
+
+    private function refValues($arr)
+    {
+        $refs = array();
+
+        foreach ($arr as $key => $value) {
+            $refs[$key] = &$arr[$key];
+        }
+
+        return $refs;
     }
 }

@@ -5,6 +5,10 @@ include_once '../include/MySQLiBinder.php';
 
 use MySQLiBinder\Binder;
 
+header('Content-type: application/json');
+$response_array = array();
+$response_array['status'] = 'success';
+
 function get_s($s, $default = "")
 {
     if (isset($_GET[$s])) {
@@ -38,8 +42,17 @@ foreach ($search_arr as $search_param) {
 }
 
 $binder->set_result_order('lower(' . $order_by . ')', $order_dir);
-$binder->prepare();
 
-if ($result = $binder->execute($param_arr)) {
-    echo json_encode($result);
+if ($binder->prepare()) {
+    if ($result = $binder->execute($param_arr)) {
+        $response_array['message'] = json_encode($result);
+    } else {
+        $response_array['status'] = 'error';
+        $response_array['message'] = $binder->error;
+    }
+} else {
+    $response_array['status'] = 'error';
+    $response_array['message'] = $binder->error;
 }
+
+echo json_encode($response_array);

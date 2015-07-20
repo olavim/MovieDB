@@ -6,31 +6,33 @@ include_once '../include/MySQLiBinder.php';
 
 use MySQLiBinder\Binder;
 
-$error = '';
+header('Content-type: application/json');
+$response_array = array();
+$response_array['status'] = 'success';
+
 $set = false;
 if (isset($_POST['form'])) {
-    var_dump($_POST['form']);
     $form = $_POST['form'];
-    foreach ($form as $key => $row) {
-        foreach ($edit_required as $heading) {
-            if (!array_key_exists($heading, $row)) {
-                $error = 'Required field missing: ' . $heading;
-                break 2;
-            } else {
-                $set = true;
-                if (array_key_exists($heading, $edit_patterns)) {
-                    $pattern = '/' . $edit_patterns[$heading] . '/';
-                    if (!preg_match($pattern, $row[$heading])) {
-                        $error = 'Field does not respect pattern restrictions: ' . $heading;
-                        break 2;
-                    }
+    foreach ($edit_required as $heading) {
+        if (!array_key_exists($heading, $form)) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = 'Required field missing: ' . $heading;
+            break;
+        } else {
+            $set = true;
+            if (array_key_exists($heading, $edit_patterns)) {
+                $pattern = '/' . $edit_patterns[$heading] . '/';
+                if (!preg_match($pattern, $form[$heading])) {
+                    $response_array['status'] = 'error';
+                    $response_array['message'] = 'Field does not respect pattern restrictions: ' . $heading;
+                    break;
                 }
             }
         }
     }
 }
 
-if ($set && !$error) {
+if ($set && $response_array['status'] == 'success') {
     $binder = new Binder($connection_moviedb, 'movie', 'update');
 
     foreach ($db_headings_alterable as $heading) {
@@ -38,17 +40,17 @@ if ($set && !$error) {
     }
 
     $binder->add_where_parameter('id');
-    $binder->prepare();
 
-    foreach ($form as $row) {
-        $id = $row['id'];
+    if ($binder->prepare()) {
+        $id = $form['id'];
         if (!is_numeric($id)) {
-            die("Invalid id: " . $id);
+            $response_array['status'] = 'error';
+            $response_array['message'] = "Invalid id: " . $id;
         }
 
         $params = array();
         foreach ($db_headings_alterable as $heading) {
-            $val = array_key_exists($heading, $row) ? $row[$heading] : '';
+            $val = array_key_exists($heading, $form) ? $form[$heading] : '';
 
             if ($edit_types[$heading] === 'checkbox') {
                 $params[] = $val ? 'x' : '';
@@ -58,13 +60,18 @@ if ($set && !$error) {
         }
         $params[] = $id;
 
-        $binder->execute($params);
+        if (!$binder->execute($params)) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = $binder->error;
+        }
+    } else {
+        $response_array['status'] = 'error';
+        $response_array['message'] = $binder->error;
     }
 
     $binder->close();
-} else if ($error) {
-    echo $error;
 }
 
 $connection_moviedb->close();
-?>
+
+echo json_encode($response_array);

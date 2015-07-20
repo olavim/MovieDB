@@ -33,7 +33,7 @@ foreach ($db_headings_searchable as $heading) {
 	<title>Movie Database</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="styles/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" href="styles/jquery.jtable.css">
 	<link rel="stylesheet" href="styles/default.css">
@@ -47,6 +47,10 @@ foreach ($db_headings_searchable as $heading) {
 	<script type="text/javascript" src="js/navigation.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
     <script>
+        $(function () {
+            MAIN.init();
+        });
+
         $(document).one('pageinit', function() {
             if (!isMobile()) {
                 $("#nav-button").attr("href", "#nav-panel");
@@ -55,27 +59,13 @@ foreach ($db_headings_searchable as $heading) {
                 $("body").data("elements-per-page", <?=isset($_SESSION['elementsPerPage']) ? $_SESSION['elementsPerPage'] : 20?>);
             }
 
-            $.ajax({
-                url: "json_table.php",
-                type: "get",
-                contentType: 'application/json',
-                dataType: 'html',
-                data: {
-                    select: "<?=join(',', $db_headings)?>",
-                    order: "<?=$order_by?>",
-                    dir: "<?=$order_direction?>",
-                    search: "<?=join(';', $search)?>"
-                },
-                beforeSend: function () {
-                    showLoader();
-                },
-                success: function (data) {
-                    hideLoader();
-                    initTable(data);
-                },
-                error: function (data) {
-                    $('body').html(data);
-                }
+            jsonAjaxCall("json_table.php", "get", {
+                select: "<?=join(',', $db_headings)?>",
+                order: "<?=$order_by?>",
+                dir: "<?=$order_direction?>",
+                search: "<?=join(';', $search)?>"
+            }, function (data) {
+                initTable(data.message);
             });
         });
 
@@ -122,8 +112,8 @@ foreach ($db_headings_searchable as $heading) {
  --><a class="no-background ui-btn ui-alt-icon ui-btn-icon-left" id="pick-btn" href="#" data-role="button">Pick</a>
 </div>
 <div id="edit-footer" data-role="footer" data-position="fixed" data-tap-toggle="false">
-    <a class="no-background ui-btn ui-alt-icon ui-btn-icon-left" id="edit-btn-cancel" href="#" data-role="button">Cancel</a><!--
- --><a class="no-background ui-btn ui-alt-icon ui-btn-icon-left" id="edit-btn-save" href="#" data-role="button">Save Changes</a>
+    <a class="no-background ui-btn ui-alt-icon ui-btn-icon-left" id="edit-cancel-btn" href="#" data-role="button">Cancel</a><!--
+ --><a class="no-background ui-btn ui-alt-icon ui-btn-icon-left" id="edit-save-btn" href="#" data-role="button">Save Changes</a>
 </div>
 <div data-role="popup" id="delete-popup" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
     <div data-role="header" data-theme="a">
@@ -133,7 +123,7 @@ foreach ($db_headings_searchable as $heading) {
         <h3 class="ui-title">Are you sure you want to delete this row?</h3>
         <p>This action cannot be undone.</p>
         <a class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" href="#" data-rel="back">Cancel</a>
-        <a class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" href="#" data-transition="flow" id="delete-btn-confirm">Delete</a>
+        <a class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" href="#" data-transition="flow" id="delete-confirm-btn">Delete</a>
     </div>
 </div>
 <div class="ui-popup ui-body-a ui-overlay-shadow ui-corner-all" data-role="popup" id="menu-popup" data-theme="b">

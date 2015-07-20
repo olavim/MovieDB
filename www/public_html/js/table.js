@@ -145,6 +145,8 @@ function orderTable(id) {
         elementsPerPage: $("body").data("elements-per-page")
     });
 
+    refreshNavigation();
+
     $.ajax({
         url: "session.php",
         type: "get",
