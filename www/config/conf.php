@@ -1,26 +1,27 @@
 <?php
-include_once '../include/psl-config.php';
-$query = <<<EOT
-SELECT COLUMN_NAME
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_SCHEMA='moviedb'
-    AND TABLE_NAME='movie'
-EOT;
+require_once '../vendor/autoload.php';
+require_once '../include/DBFactory.php';
+require_once '../include/functions.php';
 
-$connection_info = new mysqli(HOST, USER, PASSWORD, 'information_schema');
-$result = $connection_info->query($query);
-
-$db_headings = array();
-
-while ($row = $result->fetch_assoc()) {
-    $db_headings[] = $row['COLUMN_NAME'];
+if (!login_check(DBFactory::getConnection(DBFactory::CONNECTION_USER_DATABASE))) {
+    die('Login required.');
 }
 
-// all columns in the database
-// $db_headings = array('id', 'director', 'year', 'title', 'genre', 'format', 'pick');
+$mysqli = DBFactory::getConnection(DBFactory::CONNECTION_MAIN_DATABASE);
+$db = new MysqliDb($mysqli);
+
+$db->where('user_id', $_SESSION['user_id']);
+$db->orderBy('column_order', 'asc');
+$result = $db->get('entry_columns', null, 'column_name');
+
+$db_headings = array_map(function($a) { return $a['column_name']; }, $result);
+
+$db->where('user_id', $_SESSION['user_id']);
+$db->orderBy('column_order', 'asc');
+$result = $db->get('entry_columns', null, 'column_name');
 
 // columns that should be visible in the main page
-$db_headings_visible = array('director', 'year', 'title', 'genre', 'format');
+$db_headings_visible = array_map(function($a) { return $a['column_name']; }, $result);
 
 // columns that can be changed
 $db_headings_alterable = array('director', 'year', 'title', 'genre', 'format', 'pick');

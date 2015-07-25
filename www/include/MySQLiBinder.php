@@ -104,9 +104,9 @@ class Binder
             }
 
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     public function close($close_mysqli_conn = false)

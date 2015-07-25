@@ -70,6 +70,36 @@ function login_check($mysqli) {
     }
 }
 
+function request_access_token() {
+    $user = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+
+    $oauth_db = new mysqli(HOST, USER, PASSWORD, OAUTH_DATABASE);
+    $stmt = $oauth_db->prepare("SELECT client_secret FROM oauth_clients WHERE client_id = ?");
+    $stmt->bind_param('s', $user);
+    $stmt->bind_result($secret);
+    $stmt->execute();
+    $stmt->fetch();
+
+    $url = 'https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/api/token';
+
+    $data = array(
+        'grant_type' => 'client_credentials',
+        'client_id' => $user,
+        'client_secret' => $secret
+    );
+
+    $options = array(
+        'http' => array(
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($data),
+        ),
+    );
+    $context  = stream_context_create($options);
+
+    return file_get_contents($url, false, $context);
+}
+
 function esc_url($url) { 
     if ('' == $url) {
         return $url;
