@@ -1,4 +1,6 @@
 <?php
+namespace REST;
+
 include_once 'StatusCodes.php';
 
 class Response
@@ -23,14 +25,8 @@ class Response
 
     public static function send_response($code, $body = null) {
         $response = array();
-        if (StatusCodes::isError($code)) {
-            $response['status'] = 'error';
-        } else {
-            $response['status'] = 'success';
-        }
-
-        $response['status_code'] = $code;
-        $response['status_message'] = StatusCodes::getMessageForCode($code);
+        $response['status'] = $code;
+        $response['statusText'] = StatusCodes::getMessageForCode($code);
 
         if (is_array(self::$data)) {
             foreach (self::$data as $k => $v) {
@@ -68,7 +64,61 @@ class Response
     }
 
     public static function set($k, $v) {
-        self::$data[$k] = $v;
+        if (is_array($k)) {
+            self::setArray($k, 0, self::$data, $v);
+        } else {
+            self::$data[$k] = $v;
+        }
+    }
+
+    protected static function setArray($keys, $index, &$data, $value) {
+        $k = $keys[$index];
+        if ($index < count($keys) - 1) {
+            if (!isset($data[$k])) {
+                $data[$k] = array();
+            }
+
+            self::setArray($keys, $index+1, $data[$k], $value);
+        } else {
+            $data[$k] = $value;
+        }
+    }
+
+    public static function append($k, $v) {
+        if (is_array($k)) {
+            self::appendArray($k, 0, self::$data, $v);
+        } else {
+            if (isset(self::$data[$k])) {
+                if (!is_array(self::$data[$k])) {
+                    self::$data[$k] = array(self::$data[$k]);
+                }
+
+                self::$data[$k][] = $v;
+            } else {
+                self::$data[$k] = $v;
+            }
+        }
+    }
+
+    protected static function appendArray($keys, $index, &$data, $value) {
+        $k = $keys[$index];
+        if ($index < count($keys) - 1) {
+            if (!isset($data[$k])) {
+                $data[$k] = array();
+            }
+
+            self::setArray($keys, $index+1, $data[$k], $value);
+        } else {
+            if (isset($data[$k])) {
+                if (!is_array($data[$k])) {
+                    $data[$k] = array($data[$k]);
+                }
+
+                $data[$k][] = $value;
+            } else {
+                $data[$k] = $value;
+            }
+        }
     }
 
     public static function get($k) {

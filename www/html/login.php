@@ -1,11 +1,11 @@
 <?php
-include_once '../include/LoginProcessor.php';
-include_once '../include/DBFactory.php';
+include_once '../lib/LoginProcessor.php';
+include_once '../lib/DBFactory.php';
 include_once '../include/functions.php';
 
 sec_session_start();
 
-$mysqli = DBFactory::getConnection(DBFactory::CONNECTION_USER_DATABASE);
+$mysqli = Database\DBFactory::getConnection(Database\DBFactory::CONNECTION_USER_DATABASE);
 
 if (isset($_POST['username'], $_POST['p'])) {
     $processor = new Login\LoginProcessor($_POST['username'], $_POST['p'], $mysqli);

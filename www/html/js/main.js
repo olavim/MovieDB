@@ -40,16 +40,47 @@ var MAIN = MAIN || (function() {
             selected.each(function() {
                 ids.push($(this).jqmData("id"));
             });
-            ids = ids.join(';');
 
-            jsonAjaxCall("api/entries/"+ids, 'DELETE', function(data, textStatus, request) {
+            jsonAjaxCall("api/entries/"+ids.join(';'), 'DELETE', function(data, textStatus, request) {
                 if (request.status == 204) {
                     selected.remove();
+
+                    var json = $('body').data('json');
+                    $('body').data('json', $.grep(json, function (element, index) {
+                        return $.inArray(element.id, ids);
+                    }));
                 }
             });
         },
         editBtnClick = function() {
             toggleEditEntry($(".selected").eq(0));
+        },
+        editCancelBtnClick = function() {
+            toggleEditEntry($(".selected").eq(0));
+            $("#modify-footer").slideToggle("fast");
+        },
+        addBtnClick = function() {
+            jsonAjaxCall("api/entries", "POST", function(data) {
+                var id = data.entryId;
+                var table = $(":mobile-pagecontainer").pagecontainer('getActivePage').find(':jqmData(role="table")');
+                var tbody = table.find('tbody');
+                var tr = $('<tr data-id="'+id+'"></tr>');
+                var columns = {};
+                table.find('th').each(function() {
+                    var td = $('<td></td>');
+                    td.append($('<b class="ui-table-cell-label">'+$(this).html()+'</b>'));
+                    td.append($('<b class="ui-table-cell-title">&nbsp;</b>'));
+                    tr.append(td);
+                    columns[$(this).html()] = '';
+                });
+                tbody.prepend(tr);
+
+                $(".selected").removeClass('selected');
+                tr.addClass('selected');
+                toggleEditEntry($(".selected").eq(0));
+
+                $('body').data('json').push({id: id, picked: '', data: columns});
+            });
         },
         documentClick = function(event) {
             var target = $(event.target);
@@ -104,6 +135,8 @@ var MAIN = MAIN || (function() {
             $("#pick-btn").click(pickBtnClick);
             $("#delete-confirm-btn").click(deleteConfirmBtnClick);
             $("#edit-btn").click(editBtnClick);
+            $("#edit-cancel-btn").click(editCancelBtnClick);
+            $("#add-btn").click(addBtnClick);
             $(document).click(documentClick(event));
             $(':jqmData(role="viewselect")').change(viewselectChange);
         }
@@ -123,18 +156,31 @@ $(document).on("click", "#edit-save-btn", function() {
         object[heading] = value;
     });
 
-    jsonAjaxCall("api/entries/"+elem.jqmData("id"), 'PUT', object, function () {
+    var id = elem.jqmData("id");
+    var columns = {};
+    jsonAjaxCall("api/entries/"+id, 'PUT', object, function () {
         elem.find('.ui-table-cell-editfield').each(function () {
             if (!$(this).siblings('.ui-table-cell-title').length) {
                 var title = $('<b class="ui-table-cell-title"></b>');
                 title.appendTo($(this).parent());
             }
 
-            var value = $(this).val();
+            var column = $(this).siblings('.ui-table-cell-label').html();
+            var value = $(this).val() ? $(this).val() : '&nbsp;';
             $(this).siblings('.ui-table-cell-title').html(value);
+
+            columns[column] = value;
         });
+
         toggleEditEntry(elem);
         $("#modify-footer").slideToggle("fast");
+
+        for (var i = 0; i < $('body').data('json').length; i++) {
+            if ($('body').data('json')[i].id == id) {
+                $('body').data('json')[i].data = columns;
+                break;
+            }
+        }
     });
 });
 
@@ -183,12 +229,13 @@ function hideLoader() {
 }
 
 function jsonAjaxCall(url, type, params, successCallback) {
+    var data = (typeof params == 'object') ? params : {};
     $.ajax({
         url: url,
         type: type,
         contentType: "application/json",
         dataType: 'json',
-        data: JSON.stringify(params),
+        data: JSON.stringify(data),
         beforeSend: function () {
             showLoader();
         },

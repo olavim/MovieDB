@@ -1,5 +1,7 @@
 <?php
-require_once "psl-config.php";
+namespace Database;
+
+require_once __DIR__ . '/../include/psl-config.php';
 
 class DBFactory
 {
@@ -39,6 +41,6 @@ class DBFactory
     }
 
     private static function conn($db) {
-        return new mysqli(HOST, USER, PASSWORD, $db);
+        return new \mysqli(HOST, USER, PASSWORD, $db);
     }
 }

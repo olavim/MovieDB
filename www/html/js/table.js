@@ -93,31 +93,37 @@ $(document).on("click", "tbody tr", function() {
 });
 
 function toggleEditEntry(elem) {
+    var widths = [];
+    elem.find('td').each(function (index) {
+        widths[index] = $(this).width();
+    });
+
     if (!elem.hasClass('edit-on')) {
         elem.addClass("edit-on");
         var height = $(elem).find('td').eq(0).outerHeight();
-        elem.find('td').each(function () {
-            var width = $(this).width();
-            var b = $(this).find('.ui-table-cell-title');
-            var value = b.text();
-            var input = $('<input type="text" value="' + value + '" class="ui-table-cell-editfield">');
+
+        elem.find('td').each(function (index) {
+            var td = $(this);
+            var b = td.find('.ui-table-cell-title');
+            var input = $('<input type="text" value="' + b.html().replace(/&nbsp;/g,'') + '" class="ui-table-cell-editfield">');
             b.hide();
-            $(this).append(input);
+            td.append(input);
             input.height(height - 6);
-            $(this).width(width);
+            td.width(widths[index]);
         });
-        var input = $(elem).find('.ui-table-cell-editfield').eq(0);
+
+        var input = elem.find('.ui-table-cell-editfield').eq(0);
         input.focus().val(input.val());
 
         $("#modify-footer").slideToggle("fast");
     } else {
-        var height = $(elem).find('td').eq(0).height();
         elem.removeClass("edit-on");
-        elem.find('td').each(function () {
-            var width = $(this).width();
-            $(this).find('.ui-table-cell-editfield').remove();
-            $(this).find('.ui-table-cell-title').show();
-            $(this).width(width);
+
+        elem.find('td').each(function (index) {
+            var td = $(this);
+            td.find('.ui-table-cell-editfield').remove();
+            td.find('.ui-table-cell-title').show();
+            td.width(widths[index]);
         });
     }
 

@@ -1,13 +1,13 @@
 <?php
 require_once '../vendor/autoload.php';
-require_once '../include/DBFactory.php';
+require_once '../lib/DBFactory.php';
 require_once '../include/functions.php';
 
-if (!login_check(DBFactory::getConnection(DBFactory::CONNECTION_USER_DATABASE))) {
+if (!login_check(Database\DBFactory::getConnection(Database\DBFactory::CONNECTION_USER_DATABASE))) {
     die('Login required.');
 }
 
-$mysqli = DBFactory::getConnection(DBFactory::CONNECTION_MAIN_DATABASE);
+$mysqli = Database\DBFactory::getConnection(Database\DBFactory::CONNECTION_MAIN_DATABASE);
 $db = new MysqliDb($mysqli);
 
 $db->where('user_id', $_SESSION['user_id']);

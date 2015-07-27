@@ -1,4 +1,5 @@
 <?php
+namespace REST;
 
 class StatusCodes
 {

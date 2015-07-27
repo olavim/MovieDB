@@ -64,6 +64,7 @@ foreach ($db_headings_searchable as $heading) {
         });
 
         function initTable(data) {
+            data = data['entries'];
             if (!data) {
                 data = "[]";
             }
@@ -128,7 +129,7 @@ foreach ($db_headings_searchable as $heading) {
 		<li><a href="search.php" rel="external">Search</a></li>
 		<li><a href="#" onclick="printPage()">Print</a></li>
 		<li data-role="list-divider"></li>
-        <li><a href="new_entry.php" rel="external">Add Movie</a></li>
+        <li><a id="add-btn" onclick="$('#menu-popup').popup('close')">Add Movie</a></li>
         <li><a href="import.php" rel="external">Import</a></li>
 		<li data-role="list-divider"></li>
 		<li><a href="?logout=1" rel="external">Log out</a></li>

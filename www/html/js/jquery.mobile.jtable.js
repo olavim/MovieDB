@@ -120,7 +120,9 @@
                     if (settings.orderBy === keys[k]) {
                         tbody += ' class="ui-highlight"';
                     }
-                    tbody += '>' + data[key]['data'][keys[k]] + '</td>';
+                    value = data[key]['data'][keys[k]];
+                    value = value ? value : '&nbsp;';
+                    tbody += '>' + value + '</td>';
                 }
                 tbody += '</tr>';
 

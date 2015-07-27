@@ -1,14 +1,35 @@
 <?php
 require_once '../../vendor/autoload.php';
 require_once '../../include/functions.php';
-require_once '../../include/StatusCodes.php';
-require_once '../../include/Response.php';
-require_once '../../include/oauth/server.php';
-require_once '../../include/api.inc.php';
+require_once '../../lib/rest/Request.php';
+require_once '../../lib/rest/Response.php';
+require_once '../../lib/DBFactory.php';
 
 sec_session_start();
 
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+Flight::set('self', $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
+
 Flight::route('/', function() {
+    REST\Response::send_response(REST\StatusCodes::HTTP_OK, array(
+        'links' => array(
+            array(
+                'href' => Flight::get('self'),
+                'rel' => 'self',
+                'method' => 'GET'
+            ),
+            array(
+                'href' => Flight::get('self') . '/entries',
+                'rel' => 'list_all',
+                'method' => 'GET'
+            ),
+            array(
+                'href' => Flight::get('self') . '/entries',
+                'rel' => 'insert',
+                'method' => 'POST'
+            )
+        )
+    ));
 });
 
 Flight::route('/token', function() {
@@ -19,114 +40,108 @@ Flight::route('/authorize', function() {
     include_once '../../include/oauth/authorize.php';
 });
 
-Flight::route('GET /entries', function() {
-    if (($id = verify_request()) !== false) {
-        $result = get_entries($id, Flight::request()->query);
-        Response::send_response(StatusCodes::HTTP_OK, get_array($result));
-    } else {
-        Response::send_response(StatusCodes::HTTP_UNAUTHORIZED);
-    }
+Flight::route('/entries/*', function() {
+    Flight::set('mysqli', Database\DBFactory::getConnection(Database\DBFactory::CONNECTION_MAIN_DATABASE));
+    return true;
 });
 
-Flight::route('GET /entries/@id:[0-9]+', function($entry_id) {
-    if (($id = verify_request()) !== false) {
-        if ($result = get_entry($id, $entry_id)) {
-            Response::send_response(get_array($result));
+Flight::route('GET /entries(/@id:[0-9\;]+)', function($entry_ids) {
+    $entry_ids = get_entry_ids($entry_ids);
+    if (!$entry_ids) {
+        REST\Response::set('links', array(
+            array(
+                'href' => Flight::get('self') . '/entries',
+                'requestBody' => array(
+                    'search' => 's_{column}={value}&...',
+                    'sort' => 'sort={column}&order=[asc|desc]',
+                ),
+                'rel' => 'self',
+                'method' => 'GET'
+            ),
+            array(
+                'href' => Flight::get('self') . '/entries',
+                'requestBody' => '{column}={value}&...',
+                'rel' => 'insert',
+                'method' => 'POST'
+            ),
+            array(
+                'href' => Flight::get('self') . '/entries/{id}',
+                'requestBody' => '{column}={value}&...',
+                'rel' => 'update',
+                'method' => 'PUT'
+            ),
+            array(
+                'href' => Flight::get('self') . '/entries/{id}',
+                'rel' => 'delete',
+                'method' => 'DELETE'
+            )
+        ));
+    } else if (count($entry_ids) == 1) {
+        REST\Response::append(array('entries',0,'links'), array(
+            array(
+                'href' => Flight::get('self') . '/entries/' . $entry_ids[0],
+                'rel' => 'self',
+                'method' => 'GET'
+            ),
+            array(
+                'href' => Flight::get('self') . '/entries/' . $entry_ids[0],
+                'requestBody' => '{column}={value}&...',
+                'rel' => 'update',
+                'method' => 'PUT'
+            ),
+            array(
+                'href' => Flight::get('self') . '/entries/' . $entry_ids[0],
+                'rel' => 'delete',
+                'method' => 'DELETE'
+            )
+        ));
+    } else if (count($entry_ids) > 1) {
+        foreach ($entry_ids as $key => $entry) {
+            REST\Response::append(array('entries',$key,'links'), array(
+                array(
+                    'href' => Flight::get('self') . '/entries/' . $entry,
+                    'rel' => 'show',
+                    'method' => 'GET'
+                )
+            ));
         }
-    } else {
-        Response::send_response(StatusCodes::HTTP_UNAUTHORIZED);
-    }
-});
 
-Flight::route('POST /entries', function() {
-    if (($id = verify_request()) !== false) {
-        add_entry($id, Flight::request()->data);
-        Response::send_response(StatusCodes::HTTP_OK);
-    } else {
-        Response::send_response(StatusCodes::HTTP_UNAUTHORIZED);
+        REST\Response::set('links', array(
+                array(
+                    'href' => Flight::get('self') . '/entries/{id}',
+                    'requestBody' => '{column}={value}&...',
+                    'rel' => 'update',
+                    'method' => 'PUT'
+                ),
+                array(
+                    'href' => Flight::get('self') . '/entries/{id}',
+                    'rel' => 'delete',
+                    'method' => 'DELETE'
+                )
+        ));
     }
+
+    $restRequest = new REST\Request(Flight::get('mysqli'), 'GET', Flight::request()->query);
+    $restRequest->execute($entry_ids);
 });
 
 Flight::route('PUT /entries/@id:[0-9\;]+', function($entry_ids) {
-    if (($id = verify_request()) !== false) {
-        $entry_ids = explode(';', $entry_ids);
+    $restRequest = new REST\Request(Flight::get('mysqli'), 'PUT', Flight::request()->data);
+    $restRequest->execute(get_entry_ids($entry_ids));
+});
 
-        $updated = update_entry($id, $entry_ids, Flight::request()->data);
-
-        if ($updated === false) {
-
-            // entry does not exist
-            Response::send_response(StatusCodes::HTTP_NOT_FOUND);
-        } else if ($updated > 0) {
-
-            // query was successful, and entry was updated
-            Response::send_response(StatusCodes::HTTP_NO_CONTENT);
-        } else {
-
-            // query was successful, but nothing was updated
-            Response::send_response(StatusCodes::HTTP_OK);
-        }
-    } else {
-        Response::send_response(StatusCodes::HTTP_UNAUTHORIZED);
-    }
+Flight::route('POST /entries', function() {
+    $restRequest = new REST\Request(Flight::get('mysqli'), 'POST', Flight::request()->data);
+    $restRequest->execute();
 });
 
 Flight::route('DELETE /entries/@id:[0-9\;]+', function($entry_ids) {
-    if (($id = verify_request()) !== false) {
-        $entry_ids = explode(';', $entry_ids);
-
-        $deleted = delete_entries($id, $entry_ids, Flight::request()->data);
-
-        if ($deleted === false) {
-
-            // entry does not exist
-            Response::send_response(StatusCodes::HTTP_NOT_FOUND);
-        } else {
-
-            // query was successful, and entry was updated
-            Response::send_response(StatusCodes::HTTP_NO_CONTENT);
-        }
-    } else {
-        Response::send_response(StatusCodes::HTTP_UNAUTHORIZED);
-    }
-});
-
-Flight::map('error', function(Exception $ex){
-    $error = array(
-        'internal_error_message' => $ex->getMessage(),
-        'internal_error_line' => $ex->getLine()
-    );
-
-    Response::set('internal_error', $error);
-    Response::send_response(StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
+    $restRequest = new REST\Request(Flight::get('mysqli'), 'DELETE', Flight::request()->data);
+    $restRequest->execute(get_entry_ids($entry_ids));
 });
 
 Flight::start();
 
-function verify_request() {
-    $response = array();
-    $server = Oauth2\ServerInstance::getServer();
-
-    // Handle a request to a resource and authenticate the access token
-    if ($server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
-        $token = $server->getAccessTokenData(OAuth2\Request::createFromGlobals());
-        return $token['user_id'];
-    } else if (isset($_REQUEST['access_token'])) {
-        $response[] = 'Invalid access token';
-    }
-
-    $mysqli = DBFactory::getConnection(DBFactory::CONNECTION_USER_DATABASE);
-    if (login_check($mysqli)) {
-        if (!isset(Flight::request()->query['access_token'])) {
-            return $_SESSION['user_id'];
-        } else {
-            $response[] = 'You have a valid ongoing session. To authorize as that user, please omit the access token.';
-        }
-    }
-
-    if ($response) {
-        Response::set('response', $response);
-    }
-
-    return false;
+function get_entry_ids($entry_ids) {
+    return $entry_ids ? explode(';', $entry_ids) : array();
 }

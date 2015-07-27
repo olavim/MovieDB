@@ -1,3 +1,13 @@
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
 html, body, #pdf-page { /* specify page */
 	height: 100%;
 	width: 100%;
@@ -6,9 +16,6 @@ html, body, #pdf-page { /* specify page */
 }
 
 #pdf-page {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 
 	.ui-content {
 		padding: 0;
